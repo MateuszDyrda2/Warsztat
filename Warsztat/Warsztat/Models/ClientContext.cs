@@ -14,7 +14,7 @@ namespace Warsztat.Models
             optionsBuilder.UseSqlServer("Data Source=DESKTOP-O54046C\\SQLEXPRESS;Initial Catalog=WorkshopDB;Integrated Security=True;TrustServerCertificate=True;");
         }
 
-        public DbSet <Client> Clinets { get; set; }
+        public DbSet <Client> Clients { get; set; }
         
         public DbSet<Car> Cars { get; set; }
 
