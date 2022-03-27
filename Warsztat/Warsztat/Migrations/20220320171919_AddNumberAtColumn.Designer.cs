@@ -10,7 +10,7 @@ using Warsztat.Models;
 
 namespace Warsztat.Migrations
 {
-    [DbContext(typeof(ClientContext))]
+    [DbContext(typeof(ApplicationContext))]
     [Migration("20220320171919_AddNumberAtColumn")]
     partial class AddNumberAtColumn
     {

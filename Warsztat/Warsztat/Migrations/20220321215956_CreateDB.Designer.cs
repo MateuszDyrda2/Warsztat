@@ -10,7 +10,7 @@ using Warsztat.Models;
 
 namespace Warsztat.Migrations
 {
-    [DbContext(typeof(ClientContext))]
+    [DbContext(typeof(ApplicationContext))]
     [Migration("20220321215956_CreateDB")]
     partial class CreateDB
     {

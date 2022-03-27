@@ -12,7 +12,7 @@ namespace Warsztat.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int activityId { get; set; }
+        public int activityID { get; set; }
 
         public string description { get; set; }
 

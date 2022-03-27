@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Warsztat.Models
 {
-    class ClientContext : DbContext
+    class ApplicationContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
