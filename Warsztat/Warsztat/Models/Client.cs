@@ -20,5 +20,9 @@ namespace Warsztat.Models
 
         public long number { get; set; }
 
+        public int carId { get; set; }
+
+        public ICollection<Car> Cars { get; set; }
+
     }
 }

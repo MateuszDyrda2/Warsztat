@@ -16,5 +16,9 @@ namespace Warsztat.Models
 
         public long registrationNumber { get; set; }
 
+        public int clientId { get; set; }
+
+        public Client client { get; set; }
+
     }
 }

@@ -27,5 +27,16 @@ namespace Warsztat.Models
         public DbSet<Personel> Personels { get; set; }
 
         public DbSet<Request> Requests { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Car>()
+                .HasOne<Client>(c => c.client)
+                .WithMany(c => c.Cars)
+                .HasForeignKey(c => c.clientId);
+
+
+            //reszta relacji
+        }
     }
 }
