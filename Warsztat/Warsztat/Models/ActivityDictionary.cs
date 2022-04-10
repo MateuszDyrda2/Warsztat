@@ -13,5 +13,7 @@ namespace Warsztat.Models
         public string activityType { get; set; }
 
         public string activityName { get; set; }
+
+        public ICollection<Activity> Activities { get; set; }
     }
 }

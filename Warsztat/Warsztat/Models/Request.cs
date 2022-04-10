@@ -30,5 +30,10 @@ namespace Warsztat.Models
 
         public Personel personel { get; set; }
 
+
+        public int activityId { get; set; }
+
+        public ICollection<Activity> Activities { get; set; }
+
     }
 }

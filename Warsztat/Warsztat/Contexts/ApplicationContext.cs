@@ -40,6 +40,7 @@ namespace Warsztat.Models
                 .WithMany(c => c.Cars)
                 .HasForeignKey(cT => cT.carTypeMark);
 
+
             modelBuilder.Entity<Request>()
                 .HasOne<Car>(c => c.car)
                 .WithMany(r => r.requests)
@@ -49,7 +50,23 @@ namespace Warsztat.Models
                 .HasOne<Personel>(p => p.personel)
                 .WithMany(r => r.requests)
                 .HasForeignKey(p => p.personelId);
-            
+
+
+            modelBuilder.Entity<Activity>()
+                .HasOne<Request>(r => r.request)
+                .WithMany(a => a.Activities)
+                .HasForeignKey(r => r.requestId);
+
+
+            modelBuilder.Entity<Activity>()
+                .HasOne<Personel>(p => p.personel)
+                .WithMany(a => a.Activities)
+                .HasForeignKey(p => p.personelId);
+
+            modelBuilder.Entity<Activity>()
+                .HasOne<ActivityDictionary>(aD => aD.activityDictionary)
+                .WithMany(a => a.Activities)
+                .HasForeignKey(aD => aD.activityType);
             //reszta relacji
         }
     }
