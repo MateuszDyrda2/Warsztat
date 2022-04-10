@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Warsztat.Models;
 
@@ -10,9 +11,10 @@ using Warsztat.Models;
 namespace Warsztat.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ClientContextModelSnapshot : ModelSnapshot
+    [Migration("20220409180310_AddedRelationBetweenCarAndCarType")]
+    partial class AddedRelationBetweenCarAndCarType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +44,7 @@ namespace Warsztat.Migrations
 
                     b.HasKey("activityID");
 
-                    b.ToTable("Activities", (string)null);
+                    b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("Warsztat.Models.ActivityDictionary", b =>
@@ -56,7 +58,7 @@ namespace Warsztat.Migrations
 
                     b.HasKey("activityType");
 
-                    b.ToTable("ActivityDictionaries", (string)null);
+                    b.ToTable("ActivityDictionaries");
                 });
 
             modelBuilder.Entity("Warsztat.Models.Car", b =>
@@ -83,7 +85,7 @@ namespace Warsztat.Migrations
 
                     b.HasIndex("clientId");
 
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("Warsztat.Models.CarType", b =>
@@ -100,7 +102,7 @@ namespace Warsztat.Migrations
 
                     b.HasKey("mark");
 
-                    b.ToTable("CarTypes", (string)null);
+                    b.ToTable("CarTypes");
                 });
 
             modelBuilder.Entity("Warsztat.Models.Client", b =>
@@ -127,7 +129,7 @@ namespace Warsztat.Migrations
 
                     b.HasKey("clientId");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Warsztat.Models.Personel", b =>
@@ -151,7 +153,7 @@ namespace Warsztat.Migrations
 
                     b.HasKey("personelId");
 
-                    b.ToTable("Personels", (string)null);
+                    b.ToTable("Personels");
                 });
 
             modelBuilder.Entity("Warsztat.Models.Request", b =>
@@ -175,7 +177,7 @@ namespace Warsztat.Migrations
 
                     b.HasKey("carId");
 
-                    b.ToTable("Requests", (string)null);
+                    b.ToTable("Requests");
                 });
 
             modelBuilder.Entity("Warsztat.Models.Car", b =>

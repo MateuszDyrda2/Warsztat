@@ -12,13 +12,23 @@ namespace Warsztat.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int carId { get; set; }
+        public int requestId { get; set; }
 
         public string description { get; set; }
 
         public string result { get; set; }
 
         public int status { get; set; }
+
+        //Foreign Key
+        public int carId { get; set; }
+
+        public Car car { get; set; }
+
+        //Foreign Key
+        public int personelId { get; set; }
+
+        public Personel personel { get; set; }
 
     }
 }

@@ -16,9 +16,19 @@ namespace Warsztat.Models
 
         public long registrationNumber { get; set; }
 
+        //Foreign Key
         public int clientId { get; set; }
 
         public Client client { get; set; }
 
+        //Foreign Key
+        public string carTypeMark { get; set; }
+
+        public CarType carType { get; set; }
+
+
+        public ICollection<Request> requests { get; set; }
+
+        public int requestId { get; set; }
     }
 }

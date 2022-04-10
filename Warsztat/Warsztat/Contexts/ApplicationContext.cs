@@ -35,7 +35,21 @@ namespace Warsztat.Models
                 .WithMany(c => c.Cars)
                 .HasForeignKey(c => c.clientId);
 
+            modelBuilder.Entity<Car>()
+                .HasOne<CarType>(cT => cT.carType)
+                .WithMany(c => c.Cars)
+                .HasForeignKey(cT => cT.carTypeMark);
 
+            modelBuilder.Entity<Request>()
+                .HasOne<Car>(c => c.car)
+                .WithMany(r => r.requests)
+                .HasForeignKey(c => c.carId);
+
+            modelBuilder.Entity<Request>()
+                .HasOne<Personel>(p => p.personel)
+                .WithMany(r => r.requests)
+                .HasForeignKey(p => p.personelId);
+            
             //reszta relacji
         }
     }

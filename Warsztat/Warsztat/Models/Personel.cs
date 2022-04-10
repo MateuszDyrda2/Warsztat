@@ -19,5 +19,9 @@ namespace Warsztat.Models
         public string surrname { get; set; }
 
         public long number { get; set; }
+
+        public ICollection<Request> requests { get; set; }
+
+        public int requestId { get; set; }
     }
 }

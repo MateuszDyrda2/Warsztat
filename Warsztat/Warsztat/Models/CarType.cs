@@ -14,5 +14,7 @@ namespace Warsztat.Models
         public string mark { get; set; }
 
         public string model { get; set; }
+
+        public ICollection<Car> Cars { get; set; }
     }
 }
