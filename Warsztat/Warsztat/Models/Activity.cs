@@ -12,7 +12,9 @@ namespace Warsztat.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int activityID { get; set; }
+        public int activityId { get; set; }
+
+        public int sequenceNumber { get; set; }
 
         public string description { get; set; }
 
@@ -20,9 +22,14 @@ namespace Warsztat.Models
 
         public int status { get; set; }
 
+        public DateTime dateTimeOfActivityStart { get; set; }
+
+        public DateTime dateTimeOfActivityEnd { get; set; }
+
         //Foreign Key
         public int requestId { get; set; }
 
+        [Required]
         public Request request{ get; set; }
 
         //Foreign Key
@@ -33,6 +40,7 @@ namespace Warsztat.Models
         //Foreign Key
         public string activityType { get; set; }
 
+        [Required]
         public ActivityDictionary activityDictionary { get; set; }
     }
 }

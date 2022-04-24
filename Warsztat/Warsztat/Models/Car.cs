@@ -14,16 +14,19 @@ namespace Warsztat.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int carId { get; set; }
 
-        public long registrationNumber { get; set; }
+        [StringLength(10)]
+        public string registrationNumber { get; set; }
 
         //Foreign Key
         public int clientId { get; set; }
 
+        [Required]
         public Client client { get; set; }
 
         //Foreign Key
         public string carTypeMark { get; set; }
 
+        [Required]
         public CarType carType { get; set; }
 
 

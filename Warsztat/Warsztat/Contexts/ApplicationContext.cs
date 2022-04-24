@@ -11,7 +11,7 @@ namespace Warsztat.Models
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-O54046C\\SQLEXPRESS;Initial Catalog=WorkshopDB;Integrated Security=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Data Source=DESKTOP-O54046C\\SQLEXPRESS;Initial Catalog=WorkshopDatabase;Integrated Security=True;TrustServerCertificate=True;");
         }
 
         public DbSet <Client> Clients { get; set; }
@@ -51,10 +51,10 @@ namespace Warsztat.Models
                 .WithMany(r => r.requests)
                 .HasForeignKey(p => p.personelId);
 
-
+            
             modelBuilder.Entity<Activity>()
                 .HasOne<Request>(r => r.request)
-                .WithMany(a => a.Activities)
+                .WithMany(a => a.activities)
                 .HasForeignKey(r => r.requestId);
 
 
@@ -67,7 +67,6 @@ namespace Warsztat.Models
                 .HasOne<ActivityDictionary>(aD => aD.activityDictionary)
                 .WithMany(a => a.Activities)
                 .HasForeignKey(aD => aD.activityType);
-            //reszta relacji
         }
     }
 }

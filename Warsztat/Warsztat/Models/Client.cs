@@ -14,11 +14,13 @@ namespace Warsztat.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int clientId { get; set; }
 
+        [Required]
         public string name { get; set; }
 
         public string surrname { get; set; }
 
-        public long number { get; set; }
+        [StringLength(9)]
+        public string phoneNumber { get; set; }
 
         public int carId { get; set; }
 

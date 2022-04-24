@@ -18,22 +18,29 @@ namespace Warsztat.Models
 
         public string result { get; set; }
 
-        public int status { get; set; }
+        [Column(TypeName ="varchar(3)")]
+        public string status { get; set; }
+
+        public DateTime dateTimeOfRequestStart { get; set; }
+
+        public DateTime dateTimeOfRequestEnd { get; set; }
 
         //Foreign Key
         public int carId { get; set; }
 
+        [Required]//Bo nie ma requestu bez samochodu
         public Car car { get; set; }
 
         //Foreign Key
         public int personelId { get; set; }
 
+        [Required]//Bo nie ma requestu bez personelu
         public Personel personel { get; set; }
 
 
         public int activityId { get; set; }
 
-        public ICollection<Activity> Activities { get; set; }
+        public ICollection<Activity> activities { get; set; }
 
     }
 }

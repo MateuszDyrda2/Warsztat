@@ -14,17 +14,24 @@ namespace Warsztat.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int personelId { get; set; }
 
+        [Required]
+        [MaxLength(40)]
         public string name { get; set; }
 
         public string surrname { get; set; }
 
-        public long number { get; set; }
+        [StringLength(9)]
+        public string phoneNumber { get; set; }
+
+        public string role { get; set; }
+
+        public string username { get; set; }
+
+        public string password { get; set; }
 
         public ICollection<Request> requests { get; set; }
 
         public int requestId { get; set; }
-
-
 
         public int activityId { get; set; }
 
