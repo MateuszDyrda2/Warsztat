@@ -7,10 +7,10 @@ using Warsztat.Models;
 
 namespace Warsztat
 {
-    public class WorkerService
+    public class Service
     {
-        private ApplicationContext context;
-        public WorkerService()
+        private readonly ApplicationContext context;
+        public Service()
         {
             context = new ApplicationContext();
         }
@@ -19,20 +19,27 @@ namespace Warsztat
             Dictionary<string, dynamic> dictionary = new Dictionary<string, dynamic>();
             List<Dictionary<string, dynamic>> list = new List<Dictionary<string, dynamic>>();
 
-            var activities = context.Personels
+            var worker = context.Personels
                 .Where(p => p.personelId == workerID)
-                .First().Activities.ToList();
+                .First();
 
-            foreach(var activity in activities)
+            if (worker.Activities != null)
             {
-                dictionary.Add("type", activity.activityType);
-                dictionary.Add("sequenceNumber", activity.sequenceNumber);
-                dictionary.Add("description", activity.description);
-                dictionary.Add("result", activity.result);
-                dictionary.Add("status", activity.status);
-                dictionary.Add("dateTimeOfActivityStart", activity.dateTimeOfActivityStart);
-                dictionary.Add("dateTimeOfActivityEnd", activity.dateTimeOfActivityEnd);
+                var activities = worker.Activities.ToList();
+
+                foreach (var activity in activities)
+                {
+                    dictionary.Add("id", activity.activityId);
+                    dictionary.Add("type", activity.activityType);
+                    dictionary.Add("sequenceNumber", activity.sequenceNumber);
+                    dictionary.Add("description", activity.description);
+                    dictionary.Add("result", activity.result);
+                    dictionary.Add("status", activity.status);
+                    dictionary.Add("dateTimeOfActivityStart", activity.dateTimeOfActivityStart);
+                    dictionary.Add("dateTimeOfActivityEnd", activity.dateTimeOfActivityEnd);
+                }
             }
+           
             return list;
         }
         public string ActivityNameFromDictionary(string activityType)
@@ -41,16 +48,17 @@ namespace Warsztat
                 .Where(activity => activity.activityType == activityType)
                 .First().activityName;
         }
-        public Dictionary<string, dynamic> PursueWorkerActivity(int indexOfActivity, int workerID)
+        public Dictionary<string, dynamic> PursueWorkerActivity(int activityID, int workerID)
         {
             Activity changedActivity = context.Personels
                 .Where(p => p.personelId == workerID)
-                .First().Activities.ElementAt(indexOfActivity);
+                .First().Activities.Where(a => a.activityId == activityID).First();
             changedActivity.dateTimeOfActivityEnd = DateTime.Now;
             changedActivity.status = 1;
             context.SaveChanges();
 
             Dictionary<string, dynamic> dictionary = new Dictionary<string, dynamic>();
+            dictionary.Add("id", changedActivity.activityId);
             dictionary.Add("type", changedActivity.activityType);
             dictionary.Add("sequenceNumber", changedActivity.sequenceNumber);
             dictionary.Add("description", changedActivity.description);
@@ -60,16 +68,17 @@ namespace Warsztat
             dictionary.Add("dateTimeOfActivityEnd", changedActivity.dateTimeOfActivityEnd);
             return dictionary;
         }
-        public Dictionary<string, dynamic> CancelWorkerActivity(int indexOfActivity, int workerID)
+        public Dictionary<string, dynamic> CancelWorkerActivity(int activityID, int workerID)
         {
             Activity changedActivity = context.Personels
                 .Where(p => p.personelId == workerID)
-                .First().Activities.ElementAt(indexOfActivity);
+                .First().Activities.Where(a => a.activityId == activityID).First();
             changedActivity.dateTimeOfActivityEnd = DateTime.Now;
             changedActivity.status = 0;
             context.SaveChanges();
 
             Dictionary<string, dynamic> dictionary = new Dictionary<string, dynamic>();
+            dictionary.Add("id", changedActivity.activityId);
             dictionary.Add("type", changedActivity.activityType);
             dictionary.Add("sequenceNumber", changedActivity.sequenceNumber);
             dictionary.Add("description", changedActivity.description);
