@@ -19,8 +19,8 @@ namespace Warsztat
     public partial class Worker : Page
     {
         private int _workerId;
-        private Service _service;
-        public Worker(int workerId, Service service)
+        private WorkerService _service;
+        public Worker(int workerId, WorkerService service)
         {
             InitializeComponent();
             _workerId = workerId;

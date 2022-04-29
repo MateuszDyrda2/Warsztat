@@ -7,10 +7,10 @@ using Warsztat.Models;
 
 namespace Warsztat
 {
-    public class Service
+    public class WorkerService
     {
         private ApplicationContext context;
-        public Service()
+        public WorkerService()
         {
             context = new ApplicationContext();
         }
