@@ -13,29 +13,25 @@ namespace Warsztat.Services
         {
             List<Activity> activities = new();
 
-            var worker = context.Personels
-                .Where(p => p.personelId == workerID)
-                .First();
+            var activitiesDB = context.Activities
+                .Where(a => a.personelId == workerID)
+                .ToList();
 
-            if (worker.Activities != null)
+            foreach (var activity in activitiesDB)
             {
-                var activitiesDB = worker.Activities.ToList();
-
-                foreach (var activity in activitiesDB)
+                activities.Add(new Activity()
                 {
-                    activities.Add(new Activity()
-                    {
-                        Id = activity.activityId,
-                        Name = ActivityNameFromDictionary(activity.activityType),
-                        SequenceNumber = activity.sequenceNumber,
-                        Description = activity.description,
-                        Result = activity.result,
-                        Status = activity.status,
-                        Start = activity.dateTimeOfActivityStart,
-                        End = activity.dateTimeOfActivityEnd
-                    });
-                }
+                    Id = activity.activityId,
+                    Name = ActivityNameFromDictionary(activity.activityType),
+                    SequenceNumber = activity.sequenceNumber,
+                    Description = activity.description,
+                    Result = activity.result,
+                    Status = activity.status,
+                    Start = activity.dateTimeOfActivityStart,
+                    End = activity.dateTimeOfActivityEnd
+                });
             }
+
             return activities;
         }
         public string ActivityNameFromDictionary(string activityType)
