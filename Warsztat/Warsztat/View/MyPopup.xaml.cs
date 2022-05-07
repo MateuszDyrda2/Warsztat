@@ -85,7 +85,7 @@ namespace Warsztat.View
                 else if (comboBox.SelectedItem is string role)
                     data.Add(role);
                 else
-                    throw new InvalidCastException();
+                    data.Add(string.Empty);
             }
 
             dt!.Invoke(data);
@@ -128,7 +128,6 @@ namespace Warsztat.View
             ComboBox comboBox = new();
             foreach (Service.Personel worker in workers)
                 comboBox.Items.Add(worker);
-            comboBox.SelectedIndex = 0;
             comboBoxes.Add(comboBox);
 
             return this;

@@ -53,7 +53,6 @@
         <TextBlock Name="CurrentPage" HorizontalAlignment="Left" Margin="188,14,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="24" Width="362" FontSize="18" RenderTransformOrigin="0.72,0.431"/>
         <Button Content="Logout" Click="LogoutButton_Click" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Height="40" Width="75"/>
         <Button Content="Back" Click="BackButton_Click" HorizontalAlignment="Left" Margin="108,6,0,0" VerticalAlignment="Top" Height="40" Width="75"/>
-        <Button Content="Delete" Click="DeleteButton_Click" HorizontalAlignment="Left" Margin="755,6,0,0" VerticalAlignment="Top" Height="40" Width="75"/>
         <Button Content="Edit" Click="EditButton_Click" HorizontalAlignment="Left" Margin="835,6,0,0" VerticalAlignment="Top" Height="40" Width="75" RenderTransformOrigin="0.939,0.195"/>
         <Button Content="New" Click="NewButton_Click" HorizontalAlignment="Left" Margin="915,6,0,0" VerticalAlignment="Top" Height="40" Width="75"/>
     </Grid>

@@ -203,22 +203,39 @@ namespace Warsztat.Services
                 && type != string.Empty)
             {
                 int sequenceNumberInt = Int32.Parse(sequenceNumber);
-                Models.Activity activityDB = context.Activities.Add(new Models.Activity()
+                Models.Activity? activityDB = null;
+                if (workerId != -1)
                 {
-                    sequenceNumber = sequenceNumberInt,
-                    description = description,
-                    status = status,
-                    result = "In progress",
-                    dateTimeOfActivityStart = start,
-                    activityType = type,
-                    personelId = workerId,
-                    requestId = requestId
-                }).Entity;
+                    activityDB = context.Activities.Add(new Models.Activity()
+                    {
+                        sequenceNumber = sequenceNumberInt,
+                        description = description,
+                        status = status,
+                        result = "In progress",
+                        dateTimeOfActivityStart = start,
+                        activityType = type,
+                        personelId = workerId,
+                        requestId = requestId
+                    }).Entity;
+                }
+                else
+                {
+                    activityDB = context.Activities.Add(new Models.Activity()
+                    {
+                        sequenceNumber = sequenceNumberInt,
+                        description = description,
+                        status = status,
+                        result = "In progress",
+                        dateTimeOfActivityStart = start,
+                        activityType = type,
+                        requestId = requestId
+                    }).Entity;
+                }
                 context.SaveChanges();
 
                 Activity activity = new()
                 {
-                    Id = activityDB.activityId,
+                    Id = activityDB!.activityId,
                     Name = ActivityNameFromDictionary(activityDB.activityType),
                     SequenceNumber = activityDB.sequenceNumber,
                     Description = activityDB.description,

@@ -140,22 +140,6 @@ namespace Warsztat.View
                     break;
             }
         }
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            switch (Page)
-            {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                default:
-                    break;
-            }
-        }
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             switch (Page)
@@ -197,7 +181,7 @@ namespace Warsztat.View
                 case 3:
                     currentPopup = new MyPopupBuilder()
                        .TextBox("Description")
-                       .ComboBox(Service.Workers())
+                       
                        .DataTransfer(transferDelegate)
                        .Build();
                     currentPopup.Show();
@@ -207,6 +191,7 @@ namespace Warsztat.View
                        .TextBox("Description")
                        .TextBox("Sequence Number")
                        .TextBox("Type")
+                       .ComboBox(Service.Workers())
                        .DataTransfer(transferDelegate)
                        .Build();
                     currentPopup.Show();
@@ -258,7 +243,7 @@ namespace Warsztat.View
                         string activityDescription = data[0];
                         string sequenceNumber = data[1];
                         string type = data[2];
-                        int workerId = Int32.Parse(data[3]);
+                        int workerId = data[3] != String.Empty ? Int32.Parse(data[3]) : -1;
                         Service.Activity? activity = Service.AddNewActivity(sequenceNumber, activityDescription, 1, DateTime.Now, type, workerId, currentRequest!.Id);
                         if (activity != null)
                         {

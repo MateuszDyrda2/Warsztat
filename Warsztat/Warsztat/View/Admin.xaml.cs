@@ -73,22 +73,6 @@ namespace Warsztat.View
         private void ModifyChosenUserButton_Click(object sender, RoutedEventArgs e)
         {
         }
-        private void DeleteChosenUserButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Personels.SelectedItems.Count > 0)
-            {
-                Service.Personel personel = Personels.SelectedItems[0] as Service.Personel ?? throw new InvalidCastException();
-                int deletedItemIndex = Personels.Items.IndexOf(personel);
-                Service.DeletePersonel(personel.Id);
-                if (personel != null)
-                {
-                    Personels.Items.RemoveAt(deletedItemIndex);
-                    return;
-                }
-                return;
-            }
-            MessageBox.Show("No user has been chosen.");
-        }
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
         }

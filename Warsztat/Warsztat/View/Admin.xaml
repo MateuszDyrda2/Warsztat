@@ -21,7 +21,6 @@
         </ListView>
         <Button Click="AddNewUserButton_Click" Content="Add New User" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Height="45" Width="132"/>
         <Button Click="ModifyChosenUserButton_Click" Content="Modify Chosen User" HorizontalAlignment="Left" Margin="147,14,0,0" VerticalAlignment="Top" Height="44" Width="132"/>
-        <Button Click="DeleteChosenUserButton_Click" Content="Delete Chosen User" HorizontalAlignment="Left" Margin="284,14,0,0" VerticalAlignment="Top" Height="44" Width="132"/>
         <Button Click="LogoutButton_Click" Content="Logout" HorizontalAlignment="Left" Margin="730,10,0,0" VerticalAlignment="Top" Height="30" Width="60"/>
     </Grid>
 </Window>
