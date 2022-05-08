@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Warsztat.ViewModels;
 
 namespace Warsztat
 {
@@ -24,7 +23,6 @@ namespace Warsztat
         public MainWindow()
         {
             InitializeComponent();
-            //DataContext = new LoginViewModel();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -34,14 +32,7 @@ namespace Warsztat
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(firstTextbox.Text.Length == 0)
-            {
-                MessageBox.Show("The username field is empty!");
-            }
-            if(passwordTextbox.Password.Length==0)
-            {
-                MessageBox.Show("The password field is empty!");
-            }
+
         }
     }
 }

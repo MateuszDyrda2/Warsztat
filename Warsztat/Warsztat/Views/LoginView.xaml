@@ -9,9 +9,9 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Username" HorizontalAlignment="Left" Margin="140,90,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <TextBox x:Name="firstTextbox" HorizontalAlignment="Center" Margin="0,132,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged" Text="{Binding usernameText}"/>
+        <TextBox x:Name="firstTextbox" HorizontalAlignment="Center" Margin="0,132,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Password" HorizontalAlignment="Left" Margin="140,175,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <Button x:Name="loginButton" Command="{Binding LoginCommand}" Content="Log in" HorizontalAlignment="Center" Margin="0,281,0,0" VerticalAlignment="Top" Height="43" Width="120" Click="Button_Click" FontSize="20"/>
+        <Button x:Name="loginButton" Content="Log in" HorizontalAlignment="Center" Margin="0,281,0,0" VerticalAlignment="Top" Height="43" Width="120" Click="Button_Click" FontSize="20"/>
         <PasswordBox x:Name="passwordTextbox" HorizontalAlignment="Center" Margin="0,217,0,0" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
