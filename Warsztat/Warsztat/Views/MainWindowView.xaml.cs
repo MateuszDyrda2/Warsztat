@@ -25,14 +25,14 @@ namespace Warsztat
             InitializeComponent();
         }
 
-        private void openRegisterWindow(object sender, RoutedEventArgs e)
-        {
-            //Tutaj otwieranie okna z rejestracją
-        }
-
         private void openLoginWindow(object sender, RoutedEventArgs e)
         {
             //Tutaj otwieranie okna z logowaniem
+        }
+
+        private void exitApp(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

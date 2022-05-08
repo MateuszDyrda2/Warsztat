@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Warsztat"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="800">
+        Title="MainWindow" Height="300" Width="800"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Choose would you like to do:" HorizontalAlignment="Center" Margin="0,81,0,0" VerticalAlignment="Top" Width="318" Height="40" FontSize="20"/>
-        <Button x:Name="registerButton" Content="Register" HorizontalAlignment="Left" Margin="241,131,0,0" VerticalAlignment="Top" Height="33" Width="109" Click="openRegisterWindow"/>
-        <Button x:Name="loginButton" Content="Log in" HorizontalAlignment="Left" Margin="400,131,0,0" VerticalAlignment="Top" Height="33" Width="109" Click="openLoginWindow"/>
+        <Button x:Name="loginButton" Content="Log in" HorizontalAlignment="Left" Margin="241,131,0,0" VerticalAlignment="Top" Height="33" Width="109" Click="openLoginWindow"/>
+        <Button x:Name="exitButton" Content="Exit app" HorizontalAlignment="Left" Margin="400,131,0,0" VerticalAlignment="Top" Height="33" Width="109" Click="exitApp"/>
 
     </Grid>
 </Window>
