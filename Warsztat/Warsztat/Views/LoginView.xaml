@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Warsztat"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400"
+        Title="LoginWindow" Height="450" Width="400"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Username" HorizontalAlignment="Left" Margin="140,90,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <TextBox x:Name="firstTextbox" HorizontalAlignment="Center" Margin="0,132,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="usernameTextbox" HorizontalAlignment="Center" Margin="0,132,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Password" HorizontalAlignment="Left" Margin="140,175,0,0" VerticalAlignment="Top" FontSize="20"/>
         <Button x:Name="loginButton" Content="Log in" HorizontalAlignment="Center" Margin="0,281,0,0" VerticalAlignment="Top" Height="43" Width="120" Click="Button_Click" FontSize="20"/>
         <PasswordBox x:Name="passwordTextbox" HorizontalAlignment="Center" Margin="0,217,0,0" VerticalAlignment="Top" Width="120"/>
