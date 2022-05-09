@@ -20,12 +20,11 @@ namespace Warsztat.View
         public Service Service { get; set; }
         public DataTransfer transferDelegate;
         private MyPopup? currentPopup;
-        public Admin()
+        public Admin(Service Service)
         {
             InitializeComponent();
 
-            //for testing
-            Service = new();
+            this.Service = Service;
 
             if (Service == null)
                 throw new NullReferenceException();
@@ -75,6 +74,10 @@ namespace Warsztat.View
         }
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
+            LoginView loginView = new LoginView();
+            this.Close();
+            loginView.Show();
+            return;
         }
     }
 }

@@ -1,22 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using Warsztat.Services;
 
-namespace Warsztat
+namespace Warsztat.View
 {
-    public partial class Worker : Page
+    public partial class Worker : Window
     {
         public int WorkerId { get; set; }
         public Service Service { get; set; }
-        public Worker()
+        public Worker(int WorkerId, Service Service)
         {
             InitializeComponent();
 
-            //for testing
-            Service = new Service();
-            WorkerId = 3;
+            this.WorkerId = WorkerId;
+            this.Service = Service;
 
             if (Service == null)
                 throw new NullReferenceException();
@@ -59,6 +67,10 @@ namespace Warsztat
         }
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
+            LoginView loginView = new LoginView();
+            this.Close();
+            loginView.Show();
+            return;
         }
     }
 }

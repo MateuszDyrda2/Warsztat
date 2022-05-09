@@ -12,8 +12,6 @@ namespace Warsztat
     public partial class LoginView : Window
     {
         public Service Service { get; set; }
-        public DataTransfer transferDelegate;
-        private MyPopup? currentPopup;
         public LoginView()
         {
             InitializeComponent();
@@ -44,28 +42,28 @@ namespace Warsztat
                         MessageBox.Show("Logged as " + personel.Username + " !");
                         if(personel.Role=="Admin")
                         {
-                            Admin adminView = new Admin();
+                            Admin adminView = new Admin(Service);
                             this.Close();
                             adminView.Show();
+                            return;
                         }
                         else if (personel.Role == "Manager")
                         {
-                            Manager managerView = new Manager();
+                            Manager managerView = new Manager(personel.Id, Service);
                             this.Close();
                             managerView.Show();
+                            return;
                         }
                         else
                         {
-                            Worker workerView = new Worker();
+                            Worker workerView = new Worker(personel.Id, Service);
                             this.Close();
-                            //workerView.Show();        //O co mu tu chodzi??? XD
+                            workerView.Show();
+                            return;
                         }
                     }
-                    else
-                    {
-                        MessageBox.Show("There isn't such user! Try again");
-                    }
                 }
+                MessageBox.Show("There isn't such user! Try again");
             }
 
         }

@@ -27,12 +27,12 @@ namespace Warsztat.View
 
         public DataTransfer transferDelegate;
         private MyPopup? currentPopup;
-        public Manager()
+        public Manager(int ManagerId, Service Service)
         {
             InitializeComponent();
-            
-            Service = new();
-            ManagerId = 2;
+
+            this.ManagerId = ManagerId;
+            this.Service = Service;
 
             if (Service == null)
                 throw new NullReferenceException();
@@ -263,6 +263,10 @@ namespace Warsztat.View
         }
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
+            LoginView loginView = new LoginView();
+            this.Close();
+            loginView.Show();
+            return;
         }
     }
 }
