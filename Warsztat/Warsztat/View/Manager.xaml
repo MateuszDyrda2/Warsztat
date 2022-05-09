@@ -1,0 +1,59 @@
+﻿<Window x:Class="Warsztat.View.Manager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Warsztat.View"
+        mc:Ignorable="d"
+        d:DesignHeight="450" d:DesignWidth="1000"
+        Title="Manager">
+    <Grid>
+        <ListView Name="Clients" SelectionMode="Single" MouseDoubleClick="ListViewMouseDoubleClick" Margin="0,50,0,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Surname" Width="100" DisplayMemberBinding="{Binding Surname}"/>
+                    <GridViewColumn Header="Phone Number" Width="100" DisplayMemberBinding="{Binding PhoneNumber}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView Name="Cars" SelectionMode="Single" MouseDoubleClick="ListViewMouseDoubleClick" Margin="0,50,0,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Registration Number" Width="150" DisplayMemberBinding="{Binding RegistrationNumber}"/>
+                    <GridViewColumn Header="Mark" Width="100" DisplayMemberBinding="{Binding Mark}"/>
+                    <GridViewColumn Header="Model" Width="100" DisplayMemberBinding="{Binding Model}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView Name="Requests" SelectionMode="Single" MouseDoubleClick="ListViewMouseDoubleClick" Margin="0,50,0,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Description" Width="100" DisplayMemberBinding="{Binding Description}"/>
+                    <GridViewColumn Header="Result" Width="100" DisplayMemberBinding="{Binding Result}"/>
+                    <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn Header="Start" Width="125" DisplayMemberBinding="{Binding Start}"/>
+                    <GridViewColumn Header="End" Width="125" DisplayMemberBinding="{Binding End}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView Name="Activities" SelectionMode="Single" MouseDoubleClick="ListViewMouseDoubleClick" Margin="0,50,0,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Sequence Number" Width="125" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding SequenceNumber}"/>
+                    <GridViewColumn Header="Description" Width="100" DisplayMemberBinding="{Binding Description}"/>
+                    <GridViewColumn Header="Result" Width="100" DisplayMemberBinding="{Binding Result}"/>
+                    <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn Header="Start" Width="125" DisplayMemberBinding="{Binding Start}"/>
+                    <GridViewColumn Header="End" Width="125" DisplayMemberBinding="{Binding End}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBlock Name="CurrentPage" HorizontalAlignment="Left" Margin="188,14,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="24" Width="362" FontSize="18" RenderTransformOrigin="0.72,0.431"/>
+        <Button Content="Logout" Click="LogoutButton_Click" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Height="40" Width="75"/>
+        <Button Content="Back" Click="BackButton_Click" HorizontalAlignment="Left" Margin="108,6,0,0" VerticalAlignment="Top" Height="40" Width="75"/>
+        <Button Content="Edit" Click="EditButton_Click" HorizontalAlignment="Left" Margin="835,6,0,0" VerticalAlignment="Top" Height="40" Width="75" RenderTransformOrigin="0.939,0.195"/>
+        <Button Content="New" Click="NewButton_Click" HorizontalAlignment="Left" Margin="915,6,0,0" VerticalAlignment="Top" Height="40" Width="75"/>
+    </Grid>
+</Window>
