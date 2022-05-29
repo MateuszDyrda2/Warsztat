@@ -62,7 +62,7 @@ namespace Warsztat.Services
                     Id = carDB.carId,
                     RegistrationNumber = carDB.registrationNumber,
                     Mark = carDB.carTypeMark,
-                    Model = context.CarTypes.Where(c => c.mark == carDB.carTypeMark).First().model
+                    Model = context.CarTypes.Where(c => c.model == carDB.carTypeMark).First().mark
                 });
             }
 
@@ -112,24 +112,69 @@ namespace Warsztat.Services
 
             return activities;
         }
-        public Client? AddNewClient(string name, string surname, string phoneNumber)
+        public List<string> AllCars()
+        {
+            List<string> carModels = context.CarTypes
+                .Select(car => car.model).ToList();
+
+            List<string> allCars = new();
+
+            foreach(string carModel in carModels)
+            {
+                string? carMark = context.CarTypes.Where(carType => carType.model == carModel).Select(carType => carType.mark).FirstOrDefault();
+                allCars.Add($"{carMark} {carModel}");
+            }
+
+            return allCars;
+        }
+        public int? HighestSequenceNumber(int requestId)
+        {
+            List<int?> sequenceNumber = context.Activities.Where(a => a.requestId == requestId).Select(a => a.sequenceNumber).ToList();
+
+            return sequenceNumber.Count != 0 ? sequenceNumber.Max() : null;
+        }
+        public List<string> AllActivityTypes()
+        {
+            return context.ActivityDictionaries.Select(a => a.activityName).ToList();
+        }
+        public string AcitivtyTypeByName(string activityName)
+        {
+            return context.ActivityDictionaries.Where(a => a.activityName == activityName).Select(a => a.activityType).FirstOrDefault()!;
+        }
+        public Client? AddNewClient(string name, string surname, string phoneNumber, int? id)
         {
             if (name != string.Empty
                 && surname != string.Empty
                 && phoneNumber != string.Empty
                 && phoneNumber.Length == 9)
             {
-                Models.Client clientDB = context.Clients.Add(new Models.Client()
+                Models.Client? clientDB = null;
+
+                if (id == null)
                 {
-                    name = name,
-                    surrname = surname,
-                    phoneNumber = phoneNumber
-                }).Entity;
-                context.SaveChanges();
+                    clientDB = context.Clients.Add(new Models.Client()
+                    {
+                        name = name,
+                        surrname = surname,
+                        phoneNumber = phoneNumber
+                    }).Entity;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    clientDB = context.Clients
+                    .Where(p => p.clientId == id).First();
+
+                    clientDB.name = name;
+                    clientDB.surrname = surname;
+                    clientDB.phoneNumber = phoneNumber;
+                    context.SaveChanges();
+                }
+               
 
                 Client client = new Client()
                 {
-                    Id = clientDB.clientId,
+                    Id = clientDB!.clientId,
                     Name = clientDB.name,
                     Surname = clientDB.surrname,
                     PhoneNumber = clientDB.phoneNumber
@@ -140,48 +185,82 @@ namespace Warsztat.Services
             return null;
         }
 
-        public Car? AddNewCar(string registrationNumber, string mark, int clientId)
+        public Car? AddNewCar(string registrationNumber, string model, int clientId, int?id )
         {
             if (registrationNumber != string.Empty
                 && registrationNumber.Length == 10
-                && mark != string.Empty)
+                && model != string.Empty)
             {
-                Models.Car carDB = context.Cars.Add(new Models.Car()
+                Models.Car? carDB = null;
+
+                if (id == null)
                 {
-                    registrationNumber = registrationNumber,
-                    carTypeMark = mark,
-                    clientId = clientId
-                }).Entity;
-                context.SaveChanges();
+                    carDB = context.Cars.Add(new Models.Car()
+                    {
+                        registrationNumber = registrationNumber,
+                        carTypeMark = model,
+                        clientId = clientId
+                    }).Entity;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    carDB = context.Cars
+                    .Where(p => p.carId == id).First();
+
+                    carDB.registrationNumber = registrationNumber;
+                    carDB.carTypeMark = model;
+                    carDB.clientId = clientId;
+                    context.SaveChanges();
+                }
 
                 Car car = new()
                 {
-                    Id = carDB.carId,
+                    Id = carDB!.carId,
                     RegistrationNumber = carDB.registrationNumber,
                     Mark = carDB.carTypeMark,
-                    Model = context.CarTypes.Where(c => c.mark == carDB.carTypeMark).First().model
+                    Model = context.CarTypes.Where(c => c.model == carDB.carTypeMark).First().mark
                 };
                 return car;
             }
 
             return null;
         }
-        public Request? AddNewRequest(string description, string status, DateTime start, int managerId, int carId)
+        public Request? AddNewRequest(string description, int managerId, int carId, int? id)
         {
-            if (description != string.Empty
-                && status != string.Empty
-                && status.Length == 3)
+            string status = "OPN";
+            DateTime start = DateTime.Now;
+
+            if (description != string.Empty)
             {
-                Models.Request requestDB = context.Requests.Add(new Models.Request()
+                Models.Request? requestDB = null;
+
+                if (id == null)
                 {
-                    description = description,
-                    status = status,
-                    dateTimeOfRequestStart = start,
-                    result = "none",
-                    personelId = managerId,
-                    carId = carId
-                }).Entity;
-                context.SaveChanges();
+                    requestDB = context.Requests.Add(new Models.Request()
+                    {
+                        description = description,
+                        status = status,
+                        dateTimeOfRequestStart = start,
+                        result = "none",
+                        personelId = managerId,
+                        carId = carId
+                    }).Entity;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    requestDB = context.Requests
+                   .Where(p => p.carId == id).First();
+
+                    requestDB.description = description;
+                    requestDB.status = status;
+                    requestDB.dateTimeOfRequestStart = start;
+                    requestDB.result = "none";
+                    requestDB.personelId = managerId;
+                    requestDB.carId = carId;
+                    context.SaveChanges();
+                }
 
                 Request request = new()
                 {
@@ -197,41 +276,43 @@ namespace Warsztat.Services
 
             return null;
         }
-        public Activity? AddNewActivity(string sequenceNumber, string description, int status, DateTime start, string type, int workerId, int requestId)
+        public Activity? AddNewActivity(string sequenceNumber, string description, string type, int? workerId, int requestId, int? id)
         {
+            string status = "OPN";
+            DateTime start = DateTime.Now;
+
             if (description != string.Empty
                 && type != string.Empty)
             {
-                int sequenceNumberInt = Int32.Parse(sequenceNumber);
+                int? sequenceNumberInt = null;
+                if (sequenceNumber != string.Empty)
+                    sequenceNumberInt = Int32.Parse(sequenceNumber);
+
                 Models.Activity? activityDB = null;
-                if (workerId != -1)
+
+                if (id == null)
                 {
                     activityDB = context.Activities.Add(new Models.Activity()
                     {
                         sequenceNumber = sequenceNumberInt,
                         description = description,
                         status = status,
-                        result = "In progress",
                         dateTimeOfActivityStart = start,
                         activityType = type,
-                        personelId = workerId,
                         requestId = requestId
                     }).Entity;
+                    context.SaveChanges();
                 }
                 else
                 {
-                    activityDB = context.Activities.Add(new Models.Activity()
-                    {
-                        sequenceNumber = sequenceNumberInt,
-                        description = description,
-                        status = status,
-                        result = "In progress",
-                        dateTimeOfActivityStart = start,
-                        activityType = type,
-                        requestId = requestId
-                    }).Entity;
+                    activityDB = context.Activities
+                        .Where(p => p.activityId == id).First();
+
+                    activityDB.sequenceNumber = sequenceNumberInt;
+                    activityDB.description = description;
+                    activityDB.activityType = type;
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
 
                 Activity activity = new()
                 {
@@ -241,13 +322,52 @@ namespace Warsztat.Services
                     Description = activityDB.description,
                     Result = activityDB.result,
                     Status = activityDB.status,
-                    Start = activityDB.dateTimeOfActivityStart,
-                    End = activityDB.dateTimeOfActivityEnd
+                    Start = activityDB.dateTimeOfActivityStart
                 };
                 return activity;
             }
 
             return null;
+        }
+        public Request UpdateRequestStatus(string status, int id)
+        {
+            Models.Request requestDB = context.Requests
+                  .Where(p => p.carId == id).First();
+
+            requestDB.status = status;
+            context.SaveChanges();
+
+            Request request = new()
+            {
+                Id = requestDB.requestId,
+                Description = requestDB.description,
+                Result = requestDB.result,
+                Status = requestDB.status,
+                Start = requestDB.dateTimeOfRequestStart,
+                End = requestDB.dateTimeOfRequestEnd
+            };
+            return request;
+        }
+
+        public Request FinishOrCloseRequestStatus(string status, string result, int? id)
+        {
+            Models.Request requestDB = context.Requests
+                  .Where(p => p.carId == id).First();
+
+            requestDB.status = status;
+            requestDB.result = result;
+            context.SaveChanges();
+
+            Request request = new()
+            {
+                Id = requestDB.requestId,
+                Description = requestDB.description,
+                Result = requestDB.result,
+                Status = requestDB.status,
+                Start = requestDB.dateTimeOfRequestStart,
+                End = requestDB.dateTimeOfRequestEnd
+            };
+            return request;
         }
 
         public class Client
@@ -266,12 +386,39 @@ namespace Warsztat.Services
         }
         public class Request
         {
+            private string? _status;
             public int Id { get; set; }
             public string? Description { get; set; }
             public string? Result { get; set; }
-            public string? Status { get; set; }
+            public string Status
+            {
+
+                get => _status!;
+
+                set
+                {
+                    switch (value)
+                    {
+                        case "CAN":
+                            _status = "Canceled";
+                            break;
+                        case "FIN":
+                            _status = "Finished";
+                            break;
+                        case "OPN":
+                            _status = "Open";
+                            break;
+                        case "PRO":
+                            _status = "In progress";
+                            break;
+                        default:
+                            _status = "Unknown";
+                            break;
+                    }
+                }
+            }
             public DateTime Start { get; set; }
-            public DateTime End { get; set; }
+            public DateTime? End { get; set; }
         }
     }
 }

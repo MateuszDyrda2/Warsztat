@@ -34,7 +34,7 @@ namespace Warsztat.Services
 
             return activities;
         }
-        public string ActivityNameFromDictionary(string activityType)
+        public String ActivityNameFromDictionary(String activityType)
         {
             return context.ActivityDictionaries
                 .Where(activity => activity.activityType == activityType)
@@ -46,7 +46,7 @@ namespace Warsztat.Services
                 .Where(p => p.personelId == workerID)
                 .First().Activities.Where(a => a.activityId == activityID).First();
             changedActivity.dateTimeOfActivityEnd = DateTime.Now;
-            changedActivity.status = 1;
+            changedActivity.status = "FIN";
             context.SaveChanges();
 
             Activity activity = new()
@@ -68,7 +68,7 @@ namespace Warsztat.Services
                .Where(p => p.personelId == workerID)
                .First().Activities.Where(a => a.activityId == activityID).First();
             changedActivity.dateTimeOfActivityEnd = DateTime.Now;
-            changedActivity.status = 0;
+            changedActivity.status = "CAN";
             context.SaveChanges();
 
             Activity activity = new()
@@ -86,23 +86,40 @@ namespace Warsztat.Services
         }
         public class Activity
         {
+            private string? _status;
             public int Id { get; set; }
             public string? Name { get; set; }
-            public int SequenceNumber { get; set; }
+            public int? SequenceNumber { get; set; }
             public string? Description { get; set; }
             public string? Result { get; set; }
-            public int Status { get; set; }
-            public DateTime Start { get; set; }
-            public DateTime End { get; set; }
-            public override string ToString()
-            {
-                return $"{Name}\n" +
-                        $"{Description}\n" +
-                        $"Sequence Number: {SequenceNumber}\n" +
-                        $"Status: {Status}\n" +
-                        $"Result: {Result}\n" +
-                        $"{Start} - {End}";
+            public string Status { 
+
+                get => _status!;
+
+                set
+                {
+                    switch (value)
+                    {
+                        case "CAN":
+                            _status = "Canceled";
+                            break;
+                        case "FIN":
+                            _status = "Finished";
+                            break;
+                        case "OPN":
+                            _status = "Open";
+                            break;
+                        case "PRO":
+                            _status = "In progress";
+                            break;
+                        default:
+                            _status = "Unknown";
+                            break;
+                    }
+                }
             }
+            public DateTime Start { get; set; }
+            public DateTime? End { get; set; }
         }
     }
 }

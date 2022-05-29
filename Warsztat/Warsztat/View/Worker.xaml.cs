@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,15 @@ namespace Warsztat.View
             {
                 Activities.Items.Add(activity);
             }
+
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Activities.ItemsSource);
+            view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("SequenceNumber", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("Description", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("Result", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("Status", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("Start", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("End", ListSortDirection.Ascending));
         }
 
         private void PursueButton_Click(object sender, RoutedEventArgs e)
@@ -43,11 +53,15 @@ namespace Warsztat.View
             {
                 //index is 0 becouse RemoveAt removes Selected Item, so next item will have index 0
                 Service.Activity activity = Activities.SelectedItems[0] as Service.Activity ?? throw new InvalidCastException();
-                int changedItemIndex = Activities.Items.IndexOf(activity);
-                Activities.Items.RemoveAt(changedItemIndex);
-                Service.Activity changedActivity = Service.PursueWorkerActivity(activity.Id, WorkerId);
 
-                Activities.Items.Insert(changedItemIndex, changedActivity);
+                if (activity.Status == "Open" || activity.Status == "In progress")
+                {
+                    int changedItemIndex = Activities.Items.IndexOf(activity);
+                    Activities.Items.RemoveAt(changedItemIndex);
+                    Service.Activity changedActivity = Service.PursueWorkerActivity(activity.Id, WorkerId);
+
+                    Activities.Items.Insert(changedItemIndex, changedActivity);
+                }
             }
         }
 
@@ -58,11 +72,15 @@ namespace Warsztat.View
             {
                 //index is 0 becouse RemoveAt removes Selected Item, so next item will have index 0
                 Service.Activity activity = Activities.SelectedItems[0] as Service.Activity ?? throw new InvalidCastException();
-                int changedItemIndex = Activities.Items.IndexOf(activity);
-                Activities.Items.RemoveAt(changedItemIndex);
-                Service.Activity changedActivity = Service.CancelWorkerActivity(activity.Id, WorkerId);
 
-                Activities.Items.Insert(changedItemIndex, changedActivity);
+                if (activity.Status == "Open" || activity.Status == "In progress")
+                {
+                    int changedItemIndex = Activities.Items.IndexOf(activity);
+                    Activities.Items.RemoveAt(changedItemIndex);
+                    Service.Activity changedActivity = Service.CancelWorkerActivity(activity.Id, WorkerId);
+
+                    Activities.Items.Insert(changedItemIndex, changedActivity);
+                } 
             }
         }
         private void LogoutButton_Click(object sender, RoutedEventArgs e)

@@ -34,7 +34,7 @@ namespace Warsztat.Services
             return personels;
         }
 
-        public Personel? AddNewPersonel(string name, string surname, string phoneNumber, string role, string username, string password)
+        public Personel? AddPersonel(string name, string surname, string phoneNumber, string role, string username, string password, int? id)
         {
             if (name != string.Empty 
                 && surname != string.Empty 
@@ -44,20 +44,37 @@ namespace Warsztat.Services
                 && username != string.Empty 
                 && password != string.Empty)
             {
-                Models.Personel personelDB = context.Personels.Add(new Models.Personel()
+                Models.Personel? personelDB = null;
+                if (id == null)
                 {
-                    name = name,
-                    surrname = surname,
-                    phoneNumber = phoneNumber,
-                    role = role,
-                    username = username,
-                    password = password
-                }).Entity;
-                context.SaveChanges();
+                    personelDB = context.Personels.Add(new Models.Personel()
+                    {
+                        name = name,
+                        surrname = surname,
+                        phoneNumber = phoneNumber,
+                        role = role,
+                        username = username,
+                        password = password
+                    }).Entity;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    personelDB = context.Personels
+                    .Where(p => p.personelId == id).First();
+
+                    personelDB.name = name;
+                    personelDB.surrname = surname;
+                    personelDB.phoneNumber = phoneNumber;
+                    personelDB.role = role;
+                    personelDB.username = username;
+                    personelDB.password = password;
+                    context.SaveChanges();
+                }
 
                 Personel personel = new Personel()
                 {
-                    Id = personelDB.personelId,
+                    Id = personelDB!.personelId,
                     Name = personelDB.name,
                     Surname = personelDB.surrname,
                     PhoneNumber = personelDB.phoneNumber,
@@ -70,7 +87,6 @@ namespace Warsztat.Services
 
             return null;
         }
-
         public Personel? ModifyPersonel(string name, string surname, string phoneNumber, string role, string username, string password, int personelId)
         {
             if (name != string.Empty
@@ -82,8 +98,7 @@ namespace Warsztat.Services
                 && password != string.Empty)
             {
                 Models.Personel changedPersonel = context.Personels
-                .Where(p => p.personelId == personelId)
-                .First();
+                .Where(p => p.personelId == personelId).First();
 
                 changedPersonel.name = name;
                 changedPersonel.surrname = surname;

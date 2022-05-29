@@ -6,9 +6,6 @@ using Warsztat.View;
 
 namespace Warsztat
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class LoginView : Window
     {
         public Service Service { get; set; }
@@ -16,12 +13,7 @@ namespace Warsztat
         {
             InitializeComponent();
 
-            //for testing
             Service = new();
-
-            if (Service == null)
-                throw new NullReferenceException();
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -67,10 +59,5 @@ namespace Warsztat
             }
 
         }
-
-        //private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-
-        //}
     }
 }

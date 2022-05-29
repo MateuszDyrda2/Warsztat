@@ -27,6 +27,9 @@ namespace Warsztat.View
 
         public DataTransfer transferDelegate;
         private MyPopup? currentPopup;
+
+        private int? _changedItemId;
+        private string? _requestStatus = null;
         public Manager(int ManagerId, Service Service)
         {
             InitializeComponent();
@@ -44,6 +47,10 @@ namespace Warsztat.View
             Cars.Visibility = Visibility.Hidden;
             Requests.Visibility = Visibility.Hidden;
             Activities.Visibility = Visibility.Hidden;
+
+            UpdateRequestButton.Visibility = Visibility.Hidden;
+            FinishRequestButton.Visibility = Visibility.Hidden;
+            CloseRequestButton.Visibility = Visibility.Hidden;
 
             CurrentPage.Text = "Clients";
 
@@ -83,6 +90,10 @@ namespace Warsztat.View
                     Cars.Visibility = Visibility.Hidden;
                     Requests.Visibility = Visibility.Visible;
 
+                    UpdateRequestButton.Visibility = Visibility.Visible;
+                    FinishRequestButton.Visibility = Visibility.Visible;
+                    CloseRequestButton.Visibility = Visibility.Visible;
+
                     currentCar = chosenCar;
                     Page++;
                     break;
@@ -99,6 +110,10 @@ namespace Warsztat.View
 
                     Requests.Visibility = Visibility.Hidden;
                     Activities.Visibility = Visibility.Visible;
+
+                    UpdateRequestButton.Visibility = Visibility.Hidden;
+                    FinishRequestButton.Visibility = Visibility.Hidden;
+                    CloseRequestButton.Visibility = Visibility.Hidden;
 
                     currentRequest = chosenRequest;
                     Page++;
@@ -123,6 +138,10 @@ namespace Warsztat.View
                     Requests.Visibility = Visibility.Hidden;
                     Cars.Visibility = Visibility.Visible;
 
+                    UpdateRequestButton.Visibility = Visibility.Hidden;
+                    FinishRequestButton.Visibility = Visibility.Hidden;
+                    CloseRequestButton.Visibility = Visibility.Hidden;
+
                     CurrentPage.Text = CurrentPage.Text.Split('-').First();
                     CurrentPage.Text += $"- Cars";
                     Page--;
@@ -130,6 +149,10 @@ namespace Warsztat.View
                 case 4:
                     Activities.Visibility = Visibility.Hidden;
                     Requests.Visibility = Visibility.Visible;
+
+                    UpdateRequestButton.Visibility = Visibility.Visible;
+                    FinishRequestButton.Visibility = Visibility.Visible;
+                    CloseRequestButton.Visibility = Visibility.Visible;
 
                     CurrentPage.Text = CurrentPage.Text.Split('-')[0] + '-' + CurrentPage.Text.Split('-')[1];
                     CurrentPage.Text += $"- Requests";
@@ -140,25 +163,10 @@ namespace Warsztat.View
                     break;
             }
         }
-        private void EditButton_Click(object sender, RoutedEventArgs e)
-        {
-            switch (Page)
-            {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                default:
-                    break;
-            }
-        }
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
             currentPopup?.Close();
+            _changedItemId = null;
             switch (Page)
             {
                 case 1:
@@ -173,28 +181,80 @@ namespace Warsztat.View
                 case 2:
                     currentPopup = new MyPopupBuilder()
                        .TextBox("Registration Number")
-                       .TextBox("Car Mark")
+                       .ComboBox(Service.AllCars(), "Car")
                        .DataTransfer(transferDelegate)
                        .Build();
                     currentPopup.Show();
                     break;
                 case 3:
+                    _requestStatus = null;
                     currentPopup = new MyPopupBuilder()
                        .TextBox("Description")
-                       
                        .DataTransfer(transferDelegate)
                        .Build();
                     currentPopup.Show();
                     break;
                 case 4:
+                    List<string> sequenceNumbers = new List<string>();
+                    sequenceNumbers.Add("1");
+                    int? highestSequenceNumber = Service.HighestSequenceNumber(currentRequest.Id);
+                    if (highestSequenceNumber != null)
+                    {
+                        for (int i = 1; i < highestSequenceNumber.Value; i++)
+                            sequenceNumbers.Add((i + 1).ToString());
+                    }
                     currentPopup = new MyPopupBuilder()
                        .TextBox("Description")
-                       .TextBox("Sequence Number")
-                       .TextBox("Type")
+                       .ComboBox(Service.AllActivityTypes(), "Activity Type")
+                       .ComboBox(sequenceNumbers, "Sequence Number")
                        .ComboBox(Service.Workers())
                        .DataTransfer(transferDelegate)
                        .Build();
                     currentPopup.Show();
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            switch (Page)
+            {
+                case 1:
+                    if (Clients.SelectedItems.Count > 0)
+                    {
+                        currentPopup?.Close();
+                        Service.Client chosenClient = Clients.SelectedItems[0] as Service.Client ?? throw new InvalidCastException();
+                        _changedItemId = chosenClient.Id;
+
+                        currentPopup = new MyPopupBuilder()
+                            .TextBox("Name", chosenClient.Name!)
+                            .TextBox("Surname", chosenClient.Surname!)
+                            .TextBox("Phone Number", chosenClient.PhoneNumber!)
+                            .DataTransfer(transferDelegate)
+                            .Build();
+                        currentPopup.Show();
+                    }
+                    break;
+                case 2:
+                    if (Cars.SelectedItems.Count > 0)
+                    {
+                        currentPopup?.Close();
+                        Service.Car chosenCar = Cars.SelectedItems[0] as Service.Car ?? throw new InvalidCastException();
+                        _changedItemId = chosenCar.Id;
+
+                        currentPopup = new MyPopupBuilder()
+                            .TextBox("Registration Number", chosenCar.RegistrationNumber!)
+                            .ComboBox(Service.AllCars(), "Car", $"{chosenCar.Mark} {chosenCar.Model}")
+                            .DataTransfer(transferDelegate)
+                            .Build();
+                        currentPopup.Show();
+                    }
+                    break;
+                case 3:
+                    _requestStatus = null;
+                    break;
+                case 4:
                     break;
                 default:
                     break;
@@ -208,9 +268,16 @@ namespace Warsztat.View
                     string name = data[0];
                     string surname = data[1];
                     string phoneNumber = data[2];
-                    Service.Client? client = Service.AddNewClient(name, surname, phoneNumber);
+                    Service.Client? client = Service.AddNewClient(name, surname, phoneNumber, _changedItemId);
                     if (client != null)
                     {
+                        foreach (Service.Client changedClient in Clients.Items)
+                            if (changedClient.Id == _changedItemId)
+                            {
+                                Clients.Items.Remove(changedClient);
+                                break;
+                            }
+
                         Clients.Items.Add(client);
                     }
                     else
@@ -218,20 +285,44 @@ namespace Warsztat.View
                     break;
                 case 2:
                     string registrationNumber = data[0];
-                    string mark = data[1];
-                    Service.Car? car = Service.AddNewCar(registrationNumber, mark, currentClient!.Id);
+                    string model = data[1].Split(' ').Last();
+                    Service.Car? car = Service.AddNewCar(registrationNumber, model, currentClient!.Id, _changedItemId);
                     if (car != null)
                     {
+                        foreach (Service.Car changedCar in Cars.Items)
+                            if (changedCar.Id == _changedItemId)
+                            {
+                                Cars.Items.Remove(changedCar);
+                                break;
+                            }
+
                         Cars.Items.Add(car);
                     }
                     else
                         MessageBox.Show("Some fields are empty or incorrect.");
                     break;
                 case 3:
+
                     string description = data[0];
-                    Service.Request? request = Service.AddNewRequest(description, "OPN", DateTime.Now, ManagerId, currentCar!.Id);
+                    Service.Request? request = null;
+                    if (_requestStatus == null)
+                    {
+                        request = Service.AddNewRequest(description, ManagerId, currentCar!.Id, _changedItemId);
+                    }
+                    else
+                    {
+                        request = Service.FinishOrCloseRequestStatus(_requestStatus, data[0], _changedItemId);
+                    }
+                         
                     if (request != null)
                     {
+                        foreach (Service.Request changedRequest in Requests.Items)
+                            if (changedRequest.Id == _changedItemId)
+                            {
+                                Requests.Items.Remove(changedRequest);
+                                break;
+                            }
+
                         Requests.Items.Add(request);
                     }
                     else
@@ -241,12 +332,21 @@ namespace Warsztat.View
                     try
                     {
                         string activityDescription = data[0];
-                        string sequenceNumber = data[1];
-                        string type = data[2];
+                        string type = string.Empty;
+                        if (data[1] != string.Empty)
+                            type = Service.AcitivtyTypeByName(data[1]);
+                        string sequenceNumber = data[2];
                         int workerId = data[3] != String.Empty ? Int32.Parse(data[3]) : -1;
-                        Service.Activity? activity = Service.AddNewActivity(sequenceNumber, activityDescription, 1, DateTime.Now, type, workerId, currentRequest!.Id);
+                        Service.Activity? activity = Service.AddNewActivity(sequenceNumber, activityDescription, type, workerId, currentRequest!.Id, _changedItemId);
                         if (activity != null)
                         {
+                            foreach (Service.Activity changedActivity in Activities.Items)
+                                if (changedActivity.Id == _changedItemId)
+                                {
+                                    Activities.Items.Remove(changedActivity);
+                                    break;
+                                }
+
                             Activities.Items.Add(activity);
                         }
                         else
@@ -267,6 +367,63 @@ namespace Warsztat.View
             this.Close();
             loginView.Show();
             return;
+        }
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Requests.SelectedItems.Count > 0)
+            {
+                currentPopup?.Close();
+                Service.Request chosenRequest = Requests.SelectedItems[0] as Service.Request ?? throw new InvalidCastException();
+                if (chosenRequest.Status != "Finished" && chosenRequest.Status != "Canceled")
+                {
+                    Service.Request request = Service.UpdateRequestStatus("PRO", chosenRequest.Id);
+
+                    foreach (Service.Request changedRequest in Requests.Items)
+                        if (changedRequest.Id == chosenRequest.Id)
+                        {
+                            Requests.Items.Remove(changedRequest);
+                            break;
+                        }
+
+                    Requests.Items.Add(request);
+                }
+            }
+        }
+        private void FinishButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Requests.SelectedItems.Count > 0)
+            {
+                currentPopup?.Close();
+                Service.Request chosenRequest = Requests.SelectedItems[0] as Service.Request ?? throw new InvalidCastException();
+                if (chosenRequest.Status != "Finished" && chosenRequest.Status != "Canceled")
+                {
+                    _changedItemId = chosenRequest.Id;
+                    _requestStatus = "FIN";
+                    currentPopup = new MyPopupBuilder()
+                               .TextBox("Result")
+                               .DataTransfer(transferDelegate)
+                               .Build();
+                    currentPopup.Show();
+                }
+            }
+        }
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Requests.SelectedItems.Count > 0)
+            {
+                currentPopup?.Close();
+                Service.Request chosenRequest = Requests.SelectedItems[0] as Service.Request ?? throw new InvalidCastException();
+                if (chosenRequest.Status != "Finished" && chosenRequest.Status != "Canceled")
+                {
+                    _changedItemId = chosenRequest.Id;
+                    _requestStatus = "CAN";
+                    currentPopup = new MyPopupBuilder()
+                               .TextBox("Result")
+                               .DataTransfer(transferDelegate)
+                               .Build();
+                    currentPopup.Show();
+                }
+            }
         }
     }
 }

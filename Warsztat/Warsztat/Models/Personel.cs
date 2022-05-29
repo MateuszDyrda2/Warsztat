@@ -31,10 +31,6 @@ namespace Warsztat.Models
 
         public ICollection<Request> requests { get; set; }
 
-        public int requestId { get; set; }
-
-        public int activityId { get; set; }
-
         public ICollection<Activity> Activities { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Warsztat.Migrations
 {
-    public partial class betaDatabase : Migration
+    public partial class betaDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,12 +25,12 @@ namespace Warsztat.Migrations
                 name: "CarTypes",
                 columns: table => new
                 {
-                    mark = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    model = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    model = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    mark = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CarTypes", x => x.mark);
+                    table.PrimaryKey("PK_CarTypes", x => x.model);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,9 +60,7 @@ namespace Warsztat.Migrations
                     phoneNumber = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
                     role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    requestId = table.Column<int>(type: "int", nullable: false),
-                    activityId = table.Column<int>(type: "int", nullable: false)
+                    password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,7 +85,7 @@ namespace Warsztat.Migrations
                         name: "FK_Cars_CarTypes_carTypeMark",
                         column: x => x.carTypeMark,
                         principalTable: "CarTypes",
-                        principalColumn: "mark",
+                        principalColumn: "model",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cars_Clients_clientId",
@@ -104,10 +102,10 @@ namespace Warsztat.Migrations
                     requestId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    result = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    result = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     status = table.Column<string>(type: "varchar(3)", nullable: false),
                     dateTimeOfRequestStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    dateTimeOfRequestEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    dateTimeOfRequestEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     carId = table.Column<int>(type: "int", nullable: false),
                     personelId = table.Column<int>(type: "int", nullable: false),
                     activityId = table.Column<int>(type: "int", nullable: false)
@@ -135,12 +133,12 @@ namespace Warsztat.Migrations
                 {
                     activityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    sequenceNumber = table.Column<int>(type: "int", nullable: false),
+                    sequenceNumber = table.Column<int>(type: "int", nullable: true),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    result = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    status = table.Column<int>(type: "int", nullable: false),
+                    result = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    status = table.Column<string>(type: "varchar(3)", nullable: false),
                     dateTimeOfActivityStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    dateTimeOfActivityEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    dateTimeOfActivityEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     requestId = table.Column<int>(type: "int", nullable: false),
                     personelId = table.Column<int>(type: "int", nullable: false),
                     activityType = table.Column<string>(type: "nvarchar(450)", nullable: false)

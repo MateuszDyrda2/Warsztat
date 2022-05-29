@@ -10,9 +10,9 @@ namespace Warsztat.Models
 {
     class CarType
     {
-        [Key]
         public string mark { get; set; }
 
+        [Key]
         public string model { get; set; }
 
         public ICollection<Car> Cars { get; set; }

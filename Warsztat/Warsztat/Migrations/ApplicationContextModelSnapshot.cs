@@ -34,7 +34,7 @@ namespace Warsztat.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("dateTimeOfActivityEnd")
+                    b.Property<DateTime?>("dateTimeOfActivityEnd")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("dateTimeOfActivityStart")
@@ -44,21 +44,22 @@ namespace Warsztat.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("personelId")
+                    b.Property<int?>("personelId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("requestId")
                         .HasColumnType("int");
 
                     b.Property<string>("result")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("sequenceNumber")
+                    b.Property<int?>("sequenceNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("status")
-                        .HasColumnType("int");
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("varchar(3)");
 
                     b.HasKey("activityId");
 
@@ -119,14 +120,14 @@ namespace Warsztat.Migrations
 
             modelBuilder.Entity("Warsztat.Models.CarType", b =>
                 {
-                    b.Property<string>("mark")
+                    b.Property<string>("model")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("model")
+                    b.Property<string>("mark")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("mark");
+                    b.HasKey("model");
 
                     b.ToTable("CarTypes");
                 });
@@ -168,9 +169,6 @@ namespace Warsztat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("personelId"), 1L, 1);
 
-                    b.Property<int>("activityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("name")
                         .IsRequired()
                         .HasMaxLength(40)
@@ -184,9 +182,6 @@ namespace Warsztat.Migrations
                         .IsRequired()
                         .HasMaxLength(9)
                         .HasColumnType("nvarchar(9)");
-
-                    b.Property<int>("requestId")
-                        .HasColumnType("int");
 
                     b.Property<string>("role")
                         .IsRequired()
@@ -219,7 +214,7 @@ namespace Warsztat.Migrations
                     b.Property<int>("carId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("dateTimeOfRequestEnd")
+                    b.Property<DateTime?>("dateTimeOfRequestEnd")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("dateTimeOfRequestStart")
@@ -233,7 +228,6 @@ namespace Warsztat.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("result")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("status")

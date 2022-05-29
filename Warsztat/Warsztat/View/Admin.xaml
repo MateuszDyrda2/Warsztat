@@ -13,8 +13,8 @@
                     <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}"/>
                     <GridViewColumn Header="Surname" Width="100" DisplayMemberBinding="{Binding Surname}"/>
                     <GridViewColumn Header="Phone Number" Width="100" DisplayMemberBinding="{Binding PhoneNumber}"/>
+                    <GridViewColumn Header="Username" Width="120" DisplayMemberBinding="{Binding Username}"/>
                     <GridViewColumn Header="Password" Width="120" DisplayMemberBinding="{Binding Password}"/>
-                    <GridViewColumn Header="Username" Width="50" DisplayMemberBinding="{Binding Username}"/>
                     <GridViewColumn Header="Role" Width="100" DisplayMemberBinding="{Binding Role}"/>
                 </GridView>
             </ListView.View>

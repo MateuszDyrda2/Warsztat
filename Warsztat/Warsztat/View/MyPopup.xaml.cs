@@ -105,7 +105,7 @@ namespace Warsztat.View
         private List<ComboBox> comboBoxes = new();
         private DataTransfer? dt;
 
-        public MyPopupBuilder TextBox(string value)
+        public MyPopupBuilder TextBox(string value, string preFilled = "")
         {
             TextBlock textBlock = new();
             textBlock.Name = $"{value.Replace(" ", "")}TextBlock";
@@ -114,11 +114,12 @@ namespace Warsztat.View
 
             TextBox textBox = new();
             textBox.Name = $"{value.Replace(" ", "")}";
+            textBox.Text = preFilled;
             textBoxes.Add(textBox);
 
             return this;
         }
-        public MyPopupBuilder ComboBox(List<Service.Personel> workers)
+        public MyPopupBuilder ComboBox(List<Service.Personel> workers, string selectedWorker = "")
         {
             TextBlock textBlock = new();
             textBlock.Name = $"WorkerTextBlock";
@@ -128,21 +129,22 @@ namespace Warsztat.View
             ComboBox comboBox = new();
             foreach (Service.Personel worker in workers)
                 comboBox.Items.Add(worker);
+            comboBox.SelectedItem = selectedWorker;
             comboBoxes.Add(comboBox);
 
             return this;
         }
-        public MyPopupBuilder ComboBox(List<string> roles)
+        public MyPopupBuilder ComboBox(List<string> values, string description, string selectedRole = "Worker")
         {
             TextBlock textBlock = new();
-            textBlock.Name = $"RoleTextBlock";
-            textBlock.Text = $"Role";
+            textBlock.Name = $"ComboBoxTextBlock";
+            textBlock.Text = description;
             textBlocks.Add(textBlock);
 
             ComboBox comboBox = new();
-            foreach (string role in roles)
-                comboBox.Items.Add(role);
-            comboBox.SelectedIndex = 0;
+            foreach (string value in values)
+                comboBox.Items.Add(value);
+            comboBox.SelectedItem = selectedRole;
             comboBoxes.Add(comboBox);
 
             return this;

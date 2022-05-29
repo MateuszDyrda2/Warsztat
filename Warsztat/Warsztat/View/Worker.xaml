@@ -16,8 +16,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Click="PursueButton_Click" Margin="10,390,640,10" Width="150" Height="50">Pursue</Button>
-        <Button Click="CancelButton_Click" Margin="185,390,465,10" Width="150" Height="50">Cancel</Button>
+        <Button Click="PursueButton_Click" Margin="10,390,640,10" Width="150" Height="50">Pursue Activity</Button>
+        <Button Click="CancelButton_Click" Margin="185,390,465,10" Width="150" Height="50">Cancel Activity</Button>
         <Button Click="LogoutButton_Click" Margin="640,390,10,10" Width="150" Height="50">Logout</Button>
     </Grid>
 </Window>

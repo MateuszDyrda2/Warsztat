@@ -20,6 +20,7 @@ namespace Warsztat.View
         public Service Service { get; set; }
         public DataTransfer transferDelegate;
         private MyPopup? currentPopup;
+        private int? _changedItemId;
         public Admin(Service Service)
         {
             InitializeComponent();
@@ -42,13 +43,15 @@ namespace Warsztat.View
 
         private void AddNewUserButton_Click(object sender, RoutedEventArgs e)
         {
+            currentPopup?.Close();
+            _changedItemId = null;
             currentPopup = new MyPopupBuilder()
-                       .TextBox("Name")
+                       .TextBox("Name", String.Empty)
                        .TextBox("Surname")
                        .TextBox("Phone Number")
                        .TextBox("User Name")
                        .TextBox("Password")
-                       .ComboBox(new List<string> { "Manager", "Worker" })
+                       .ComboBox(new List<string> { "Manager", "Worker" }, "Role")
                        .DataTransfer(transferDelegate)
                        .Build();
             currentPopup.Show();
@@ -58,19 +61,57 @@ namespace Warsztat.View
             string name = data[0];
             string surname = data[1];
             string phoneNumber = data[2];
-            string password = data[3];
-            string userName = data[4];
+            string userName = data[3];
+            string password = data[4];
             string role = data[5];
-            Service.Personel? personel = Service.AddNewPersonel(name, surname, phoneNumber, role, userName, password);
+            Service.Personel? personel = Service.AddPersonel(name, surname, phoneNumber, role, userName, password, _changedItemId);
             if (personel != null)
             {
+                foreach (Service.Personel changedPersonel in Personels.Items)
+                    if (changedPersonel.Id == _changedItemId)
+                    {
+                        Personels.Items.Remove(changedPersonel);
+                        break;
+                    }
+                       
+
                 Personels.Items.Add(personel);
             }
             else
+            {
                 MessageBox.Show("Some fields are empty or incorrect.");
+                currentPopup = new MyPopupBuilder()
+                      .TextBox("Name", name)
+                      .TextBox("Surname", surname)
+                      .TextBox("Phone Number", phoneNumber)
+                      .TextBox("User Name", userName)
+                      .TextBox("Password", password)
+                      .ComboBox(new List<string> { "Manager", "Worker" }, "Role", role)
+                      .DataTransfer(transferDelegate)
+                      .Build();
+                currentPopup.Show();
+            }
+                
         }
         private void ModifyChosenUserButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Personels.SelectedItems.Count > 0)
+            {
+                currentPopup?.Close();
+                Service.Personel chosenPersonel = Personels.SelectedItems[0] as Service.Personel ?? throw new InvalidCastException();
+                _changedItemId = chosenPersonel.Id;
+
+                currentPopup = new MyPopupBuilder()
+                         .TextBox("Name", chosenPersonel.Name!)
+                         .TextBox("Surname", chosenPersonel.Surname!)
+                         .TextBox("Phone Number", chosenPersonel.PhoneNumber!)
+                         .TextBox("User Name", chosenPersonel.Username!)
+                         .TextBox("Password", chosenPersonel.Password!)
+                         .ComboBox(new List<string> { "Manager", "Worker" }, "Role", chosenPersonel.Role!)
+                         .DataTransfer(transferDelegate)
+                         .Build();
+                currentPopup.Show();
+            }
         }
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {

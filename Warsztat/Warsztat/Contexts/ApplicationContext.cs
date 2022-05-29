@@ -11,7 +11,7 @@ namespace Warsztat.Models
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQAGAI8\\SQLEXPRESS03;Initial Catalog=WorkshopDatabase;Integrated Security=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Data Source=DESKTOP-MQAGAI8\\SQLEXPRESS04;Initial Catalog=WorkshopDatabase;Integrated Security=True;TrustServerCertificate=True;");
         }
 
         public DbSet <Client> Clients { get; set; }

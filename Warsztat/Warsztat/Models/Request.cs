@@ -16,14 +16,14 @@ namespace Warsztat.Models
 
         public string description { get; set; }
 
-        public string result { get; set; }
+        public string? result { get; set; }
 
         [Column(TypeName ="varchar(3)")]
         public string status { get; set; }
 
         public DateTime dateTimeOfRequestStart { get; set; }
 
-        public DateTime dateTimeOfRequestEnd { get; set; }
+        public DateTime? dateTimeOfRequestEnd { get; set; }
 
         //Foreign Key
         public int carId { get; set; }

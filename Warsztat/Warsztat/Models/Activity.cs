@@ -14,17 +14,18 @@ namespace Warsztat.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int activityId { get; set; }
 
-        public int sequenceNumber { get; set; }
+        public int? sequenceNumber { get; set; }
 
         public string description { get; set; }
 
-        public string result { get; set; }
+        public string? result { get; set; }
 
-        public int status { get; set; }
+        [Column(TypeName = "varchar(3)")]
+        public string status { get; set; }
 
         public DateTime dateTimeOfActivityStart { get; set; }
 
-        public DateTime dateTimeOfActivityEnd { get; set; }
+        public DateTime? dateTimeOfActivityEnd { get; set; }
 
         //Foreign Key
         public int requestId { get; set; }
@@ -33,7 +34,7 @@ namespace Warsztat.Models
         public Request request{ get; set; }
 
         //Foreign Key
-        public int personelId { get; set; }
+        public int? personelId { get; set; }
 
         public Personel personel { get; set; }
 
