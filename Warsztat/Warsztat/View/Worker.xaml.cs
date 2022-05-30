@@ -36,14 +36,14 @@ namespace Warsztat.View
                 Activities.Items.Add(activity);
             }
 
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Activities.ItemsSource);
+            /*CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Activities.ItemsSource);
             view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription("SequenceNumber", ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription("Description", ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription("Result", ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription("Status", ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription("Start", ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription("End", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("End", ListSortDirection.Ascending));*/
         }
 
         private void PursueButton_Click(object sender, RoutedEventArgs e)
