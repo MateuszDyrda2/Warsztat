@@ -12,7 +12,9 @@
         <ListView Name="Activities">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header="Description" Width="120" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Sequence Number" Width="100" DisplayMemberBinding="{Binding SequenceNumber}"/>
+                    <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
                 </GridView>
             </ListView.View>
         </ListView>

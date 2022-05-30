@@ -299,7 +299,8 @@ namespace Warsztat.Services
                         status = status,
                         dateTimeOfActivityStart = start,
                         activityType = type,
-                        requestId = requestId
+                        requestId = requestId,
+                        personelId = workerId
                     }).Entity;
                     context.SaveChanges();
                 }
