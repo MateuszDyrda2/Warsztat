@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
 using Warsztat.Services;
 using Warsztat.View;
@@ -27,9 +29,13 @@ namespace Warsztat
 
                 List<Service.Personel> personels = Service.checkAllPersonel();
 
+                SHA512 sha512Hash = SHA512.Create();
+                byte[] sourceBytes = Encoding.UTF8.GetBytes(passwordTextbox.Password);
+                byte[] hashBytes = sha512Hash.ComputeHash(sourceBytes);
+                string hash = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
                 foreach (Service.Personel personel in personels)
                 {
-                    if(personel.Username == usernameTextbox.Text && personel.Password == passwordTextbox.Password)
+                    if(personel.Username == usernameTextbox.Text && personel.Password == hash)
                     {
                         MessageBox.Show("Logged as " + personel.Username + " !");
                         if(personel.Role=="Admin")

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,11 @@ namespace Warsztat.Services
             {
                 if (personelDB.role != "Admin")
                 {
+                    SHA512 sha512Hash = SHA512.Create();
+                    //From String to byte array
+                    byte[] sourceBytes = Encoding.UTF8.GetBytes(personelDB.password);
+                    byte[] hashBytes = sha512Hash.ComputeHash(sourceBytes);
+                    string hash = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
                     personels.Add(new Personel()
                     {
                         Id = personelDB.personelId,
@@ -26,7 +32,7 @@ namespace Warsztat.Services
                         PhoneNumber = personelDB.phoneNumber,
                         Role = personelDB.role,
                         Username = personelDB.username,
-                        Password = personelDB.password
+                        Password = hash
                     });
                 }
             }
@@ -45,6 +51,12 @@ namespace Warsztat.Services
                 && password != string.Empty)
             {
                 Models.Personel? personelDB = null;
+
+                SHA512 sha512Hash = SHA512.Create();
+                //From String to byte array
+                byte[] sourceBytes = Encoding.UTF8.GetBytes(password);
+                byte[] hashBytes = sha512Hash.ComputeHash(sourceBytes);
+                string hash = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
                 if (id == null)
                 {
                     personelDB = context.Personels.Add(new Models.Personel()
@@ -54,7 +66,7 @@ namespace Warsztat.Services
                         phoneNumber = phoneNumber,
                         role = role,
                         username = username,
-                        password = password
+                        password = hash
                     }).Entity;
                     context.SaveChanges();
                 }
@@ -68,7 +80,7 @@ namespace Warsztat.Services
                     personelDB.phoneNumber = phoneNumber;
                     personelDB.role = role;
                     personelDB.username = username;
-                    personelDB.password = password;
+                    personelDB.password = hash;
                     context.SaveChanges();
                 }
 
@@ -80,7 +92,7 @@ namespace Warsztat.Services
                     PhoneNumber = personelDB.phoneNumber,
                     Role = personelDB.role,
                     Username = personelDB.username,
-                    Password = personelDB.password
+                    Password = hash
                 };
                 return personel;
             }
