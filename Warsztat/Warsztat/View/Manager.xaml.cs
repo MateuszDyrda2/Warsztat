@@ -196,12 +196,15 @@ namespace Warsztat.View
                     break;
                 case 4:
                     List<string> sequenceNumbers = new List<string>();
-                    sequenceNumbers.Add("1");
-                    int? highestSequenceNumber = Service.HighestSequenceNumber(currentRequest.Id);
+                    int? highestSequenceNumber = Service.HighestSequenceNumber(currentRequest!.Id);
                     if (highestSequenceNumber != null)
                     {
-                        for (int i = 1; i < highestSequenceNumber.Value; i++)
-                            sequenceNumbers.Add((i + 1).ToString());
+                        for (int i = 1; i <= highestSequenceNumber.Value; i++)
+                            sequenceNumbers.Add((i).ToString());
+                    }
+                    else
+                    {
+                        sequenceNumbers.Add("1");
                     }
                     currentPopup = new MyPopupBuilder()
                        .TextBox("Description")
@@ -302,9 +305,8 @@ namespace Warsztat.View
                         MessageBox.Show("Some fields are empty or incorrect.");
                     break;
                 case 3:
-
                     string description = data[0];
-                    Service.Request? request = null;
+                    Service.Request? request;
                     if (_requestStatus == null)
                     {
                         request = Service.AddNewRequest(description, ManagerId, currentCar!.Id, _changedItemId);
@@ -317,11 +319,13 @@ namespace Warsztat.View
                     if (request != null)
                     {
                         foreach (Service.Request changedRequest in Requests.Items)
+                        {
                             if (changedRequest.Id == _changedItemId)
                             {
                                 Requests.Items.Remove(changedRequest);
                                 break;
                             }
+                        }
 
                         Requests.Items.Add(request);
                     }

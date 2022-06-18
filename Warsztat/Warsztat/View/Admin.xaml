@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Admin" Height="450" Width="800">
     <Grid>
-        <ListView Name="Personels" SelectionMode="Single" Margin="0,63,0,0">
+        <ListView Name="Personels" SelectionMode="Single" Margin="0,65,150,0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}"/>
@@ -22,5 +22,6 @@
         <Button Click="AddNewUserButton_Click" Content="Add New User" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Height="45" Width="132"/>
         <Button Click="ModifyChosenUserButton_Click" Content="Modify Chosen User" HorizontalAlignment="Left" Margin="147,14,0,0" VerticalAlignment="Top" Height="44" Width="132"/>
         <Button Click="LogoutButton_Click" Content="Logout" HorizontalAlignment="Left" Margin="730,10,0,0" VerticalAlignment="Top" Height="30" Width="60"/>
+        <CheckBox Name="StatusCheckbox" IsChecked="False" Checked="Status_CheckedChanged" Unchecked="Status_CheckedChanged" Content="Show disactive users" HorizontalAlignment="Left" Margin="655,70,0,0" VerticalAlignment="Top" Width="135" Height="20"/>
     </Grid>
 </Window>

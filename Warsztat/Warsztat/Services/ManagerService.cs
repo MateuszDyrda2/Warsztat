@@ -286,7 +286,10 @@ namespace Warsztat.Services
             {
                 int? sequenceNumberInt = null;
                 if (sequenceNumber != string.Empty)
+                {
                     sequenceNumberInt = Int32.Parse(sequenceNumber);
+                    _updateAllActivitySequenceNumbers(sequenceNumberInt, requestId);
+                }
 
                 Models.Activity? activityDB = null;
 
@@ -353,7 +356,7 @@ namespace Warsztat.Services
         public Request FinishOrCloseRequestStatus(string status, string result, int? id)
         {
             Models.Request requestDB = context.Requests
-                  .Where(p => p.carId == id).First();
+                  .Where(r => r.activityId == id).First();
 
             requestDB.status = status;
             requestDB.result = result;
@@ -366,11 +369,25 @@ namespace Warsztat.Services
                 Result = requestDB.result,
                 Status = requestDB.status,
                 Start = requestDB.dateTimeOfRequestStart,
-                End = requestDB.dateTimeOfRequestEnd
+                End = DateTime.Now
             };
             return request;
         }
 
+        private void _updateAllActivitySequenceNumbers(int? sequenceNumber, int requestId)
+        {
+            List<Activity> activities = new();
+
+            var activitiesDB = context.Activities.Where(a => a.requestId == requestId).ToList();
+
+            foreach (var activityDB in activitiesDB)
+            {
+                if (activityDB.sequenceNumber >= sequenceNumber)
+                    activityDB.sequenceNumber++;
+            }
+            context.SaveChanges();
+        }
+        
         public class Client
         {
             public int Id { get; set; }

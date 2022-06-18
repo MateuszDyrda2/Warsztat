@@ -33,10 +33,10 @@ namespace Warsztat.View
 
             List<Service.Personel> personels = Service.WorkersAndManagers();
 
-            foreach (Service.Personel personel in personels)
-            {
-                Personels.Items.Add(personel);
-            }
+            Personels.ItemsSource = personels;
+
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Personels.ItemsSource);
+            view.Filter = StatusFilter;
 
             transferDelegate += new DataTransfer(ReceiveInputFromPopup);
         }
@@ -64,7 +64,8 @@ namespace Warsztat.View
             string userName = data[3];
             string password = data[4];
             string role = data[5];
-            Service.Personel? personel = Service.AddPersonel(name, surname, phoneNumber, role, userName, password, _changedItemId);
+            bool isActive = data[6] != null ? data[6] == "Active" ? true : false : true;
+            Service.Personel? personel = Service.AddPersonel(name, surname, phoneNumber, role, userName, password, _changedItemId, isActive);
             if (personel != null)
             {
                 foreach (Service.Personel changedPersonel in Personels.Items)
@@ -108,6 +109,7 @@ namespace Warsztat.View
                          .TextBox("User Name", chosenPersonel.Username!)
                          .TextBox("Password", chosenPersonel.Password!)
                          .ComboBox(new List<string> { "Manager", "Worker" }, "Role", chosenPersonel.Role!)
+                         .ComboBox(new List<string> { "Active", "Disactive" }, "Status", chosenPersonel.IsActive ? "Active" : "Disactive")
                          .DataTransfer(transferDelegate)
                          .Build();
                 currentPopup.Show();
@@ -119,6 +121,16 @@ namespace Warsztat.View
             this.Close();
             loginView.Show();
             return;
+        }
+
+        private void Status_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(Personels.ItemsSource).Refresh();
+        }
+
+        private bool StatusFilter(object item)
+        {
+            return StatusCheckbox.IsChecked == true ? (item as Service.Personel)!.IsActive : true;
         }
     }
 }

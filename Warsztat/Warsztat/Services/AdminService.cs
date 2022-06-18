@@ -32,7 +32,8 @@ namespace Warsztat.Services
                         PhoneNumber = personelDB.phoneNumber,
                         Role = personelDB.role,
                         Username = personelDB.username,
-                        Password = hash
+                        Password = hash,
+                        IsActive = personelDB.isActive,
                     });
                 }
             }
@@ -40,7 +41,7 @@ namespace Warsztat.Services
             return personels;
         }
 
-        public Personel? AddPersonel(string name, string surname, string phoneNumber, string role, string username, string password, int? id)
+        public Personel? AddPersonel(string name, string surname, string phoneNumber, string role, string username, string password, int? id, bool isActive)
         {
             if (name != string.Empty 
                 && surname != string.Empty 
@@ -66,7 +67,8 @@ namespace Warsztat.Services
                         phoneNumber = phoneNumber,
                         role = role,
                         username = username,
-                        password = hash
+                        password = hash,
+                        isActive = isActive,
                     }).Entity;
                     context.SaveChanges();
                 }
@@ -81,6 +83,7 @@ namespace Warsztat.Services
                     personelDB.role = role;
                     personelDB.username = username;
                     personelDB.password = hash;
+                    personelDB.isActive = isActive;
                     context.SaveChanges();
                 }
 
@@ -92,14 +95,17 @@ namespace Warsztat.Services
                     PhoneNumber = personelDB.phoneNumber,
                     Role = personelDB.role,
                     Username = personelDB.username,
-                    Password = hash
+                    Password = hash,
+                    IsActive = personelDB.isActive,
                 };
                 return personel;
             }
 
             return null;
         }
-        public Personel? ModifyPersonel(string name, string surname, string phoneNumber, string role, string username, string password, int personelId)
+
+        //do wyrzucenia i think
+       /* public Personel? ModifyPersonel(string name, string surname, string phoneNumber, string role, string username, string password, int personelId)
         {
             if (name != string.Empty
                 && surname != string.Empty
@@ -134,7 +140,7 @@ namespace Warsztat.Services
             }
 
             return null;
-        }
+        }*/
         public void DeletePersonel(int personelId)
         {
             Models.Personel personel = context.Personels
@@ -154,6 +160,8 @@ namespace Warsztat.Services
             public string? Role { get; set; }
             public string? Username { get; set; }
             public string? Password { get; set; }
+
+            public bool IsActive { get; set; }
             public override string ToString()
             {
                 return $"{Name} {Surname}";

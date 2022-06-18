@@ -9,17 +9,27 @@
       Title="Worker">
 
     <Grid>
-        <ListView Name="Activities">
+        <ListView Name="Activities" SelectionMode="Single" Margin="0,50,150,0">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="Request" Width="120" DisplayMemberBinding="{Binding RequestName}"/>
                     <GridViewColumn Header="Description" Width="120" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Sequence Number" Width="100" DisplayMemberBinding="{Binding SequenceNumber}"/>
-                    <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn Header="Sequence Number" Width="120" DisplayMemberBinding="{Binding SequenceNumber}"/>
+                    <GridViewColumn Header="Status" Width="120" DisplayMemberBinding="{Binding Status}"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Click="PursueButton_Click" Margin="10,390,640,10" Width="150" Height="50">Pursue Activity</Button>
-        <Button Click="CancelButton_Click" Margin="185,390,465,10" Width="150" Height="50">Cancel Activity</Button>
-        <Button Click="LogoutButton_Click" Margin="640,390,10,10" Width="150" Height="50">Logout</Button>
+        <Button Click="PursueButton_Click" Margin="443,11,267,393">Pursue Activity</Button>
+        <Button Click="CancelButton_Click" Margin="562,9,155,400">Cancel Activity</Button>
+        <Button Click="LogoutButton_Click" Margin="698,6,10,400">Logout</Button>
+        <TextBlock HorizontalAlignment="Left" Margin="655,50,0,0" Text="Status:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <CheckBox Content="Open" IsChecked="true" HorizontalAlignment="Left" Margin="650,75,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="In progress" IsChecked="true" HorizontalAlignment="Left" Margin="650,100,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="Finished" IsChecked="false" HorizontalAlignment="Left" Margin="650,125,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="Cancelled" IsChecked="false" HorizontalAlignment="Left" Margin="650,150,0,0" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Search by request:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,31,0,0" Text="Search by description:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="130,8,0,0" VerticalAlignment="Top" Width="110" Height="19"/>
+        <TextBox HorizontalAlignment="Left" Margin="130,30,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="110"/>
     </Grid>
 </Window>

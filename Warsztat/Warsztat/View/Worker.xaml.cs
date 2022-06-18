@@ -20,6 +20,12 @@ namespace Warsztat.View
     {
         public int WorkerId { get; set; }
         public Service Service { get; set; }
+
+        public DataTransfer transferDelegate;
+        private MyPopup? currentPopup;
+
+        private int? _changedItemId;
+        private string? _activityStatus = null;
         public Worker(int WorkerId, Service Service)
         {
             InitializeComponent();
@@ -44,43 +50,54 @@ namespace Warsztat.View
             view.SortDescriptions.Add(new SortDescription("Status", ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription("Start", ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription("End", ListSortDirection.Ascending));*/
+
+            transferDelegate += new DataTransfer(ReceiveInputFromPopup);
+        }
+
+        public void ReceiveInputFromPopup(List<string> data)
+        {
+            if (_activityStatus != null)
+            {
+                Service.Activity activity = Service.FinishOrCloseActivityStatus(_activityStatus, data[0], _changedItemId);
+                Activities.Items.Add(activity);
+            }
         }
 
         private void PursueButton_Click(object sender, RoutedEventArgs e)
         {
-            int numberOfSelectedItems = Activities.SelectedItems.Count;
-            for (int i = 0; i < numberOfSelectedItems; i++)
+            if (Activities.SelectedItems.Count > 0)
             {
-                //index is 0 becouse RemoveAt removes Selected Item, so next item will have index 0
-                Service.Activity activity = Activities.SelectedItems[0] as Service.Activity ?? throw new InvalidCastException();
-
-                if (activity.Status == "Open" || activity.Status == "In progress")
+                currentPopup?.Close();
+                Service.Activity chosenActivity = Activities.SelectedItems[0] as Service.Activity ?? throw new InvalidCastException();
+                if (chosenActivity.Status != "Finished" && chosenActivity.Status != "Canceled")
                 {
-                    int changedItemIndex = Activities.Items.IndexOf(activity);
-                    Activities.Items.RemoveAt(changedItemIndex);
-                    Service.Activity changedActivity = Service.PursueWorkerActivity(activity.Id, WorkerId);
-
-                    Activities.Items.Insert(changedItemIndex, changedActivity);
+                    _changedItemId = chosenActivity.Id;
+                    _activityStatus = "FIN";
+                    currentPopup = new MyPopupBuilder()
+                        .TextBox("Result")
+                        .DataTransfer(transferDelegate)
+                        .Build();
+                    currentPopup.Show();
                 }
             }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            int numberOfSelectedItems = Activities.SelectedItems.Count;
-            for (int i = 0; i < numberOfSelectedItems; i++)
+            if (Activities.SelectedItems.Count > 0)
             {
-                //index is 0 becouse RemoveAt removes Selected Item, so next item will have index 0
-                Service.Activity activity = Activities.SelectedItems[0] as Service.Activity ?? throw new InvalidCastException();
-
-                if (activity.Status == "Open" || activity.Status == "In progress")
+                currentPopup?.Close();
+                Service.Activity chosenActivity = Activities.SelectedItems[0] as Service.Activity ?? throw new InvalidCastException();
+                if (chosenActivity.Status != "Finished" && chosenActivity.Status != "Canceled")
                 {
-                    int changedItemIndex = Activities.Items.IndexOf(activity);
-                    Activities.Items.RemoveAt(changedItemIndex);
-                    Service.Activity changedActivity = Service.CancelWorkerActivity(activity.Id, WorkerId);
-
-                    Activities.Items.Insert(changedItemIndex, changedActivity);
-                } 
+                    _changedItemId = chosenActivity.Id;
+                    _activityStatus = "CAN";
+                    currentPopup = new MyPopupBuilder()
+                        .TextBox("Result")
+                        .DataTransfer(transferDelegate)
+                        .Build();
+                    currentPopup.Show();
+                }
             }
         }
         private void LogoutButton_Click(object sender, RoutedEventArgs e)

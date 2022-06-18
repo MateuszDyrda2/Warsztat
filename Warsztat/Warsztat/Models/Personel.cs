@@ -29,6 +29,8 @@ namespace Warsztat.Models
 
         public string password { get; set; }
 
+        public bool isActive { get; set; }
+
         public ICollection<Request> requests { get; set; }
 
         public ICollection<Activity> Activities { get; set; }
