@@ -43,12 +43,12 @@ namespace Warsztat.Services
 
         public Personel? AddPersonel(string name, string surname, string phoneNumber, string role, string username, string password, int? id, bool isActive)
         {
-            if (name != string.Empty 
-                && surname != string.Empty 
-                && phoneNumber != string.Empty 
+            if (name != string.Empty
+                && surname != string.Empty
+                && phoneNumber != string.Empty
                 && phoneNumber.Length == 9
-                && role != string.Empty 
-                && username != string.Empty 
+                && role != string.Empty
+                && username != string.Empty
                 && password != string.Empty)
             {
                 Models.Personel? personelDB = null;
@@ -104,43 +104,6 @@ namespace Warsztat.Services
             return null;
         }
 
-        //do wyrzucenia i think
-       /* public Personel? ModifyPersonel(string name, string surname, string phoneNumber, string role, string username, string password, int personelId)
-        {
-            if (name != string.Empty
-                && surname != string.Empty
-                && phoneNumber != string.Empty
-                && phoneNumber.Length == 9
-                && role != string.Empty
-                && username != string.Empty
-                && password != string.Empty)
-            {
-                Models.Personel changedPersonel = context.Personels
-                .Where(p => p.personelId == personelId).First();
-
-                changedPersonel.name = name;
-                changedPersonel.surrname = surname;
-                changedPersonel.phoneNumber = phoneNumber;
-                changedPersonel.role = role;
-                changedPersonel.username = username;
-                changedPersonel.password = password;
-                context.SaveChanges();
-
-                Personel personel = new Personel()
-                {
-                    Id = changedPersonel.personelId,
-                    Name = changedPersonel.name,
-                    Surname = changedPersonel.surrname,
-                    PhoneNumber = changedPersonel.phoneNumber,
-                    Role = changedPersonel.role,
-                    Username = changedPersonel.username,
-                    Password = changedPersonel.password
-                };
-                return personel;
-            }
-
-            return null;
-        }*/
         public void DeletePersonel(int personelId)
         {
             Models.Personel personel = context.Personels

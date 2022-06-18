@@ -44,7 +44,8 @@ namespace Warsztat.View
             requestFilter.Items.Add(string.Empty);
             foreach (Service.Activity activity in activities)
             {
-                requestFilter.Items.Add(activity.ParentRequestName);
+                if (!requestFilter.Items.Contains(activity.ParentRequestName))
+                    requestFilter.Items.Add(activity.ParentRequestName);
             }
 
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Activities.ItemsSource);
@@ -57,8 +58,10 @@ namespace Warsztat.View
         {
             if (_activityStatus != null)
             {
+                activities.RemoveAll(item => item.Id == _changedItemId);
                 Service.Activity activity = Service.FinishOrCloseActivityStatus(_activityStatus, data[0], _changedItemId);
                 activities.Add(activity);
+                CollectionViewSource.GetDefaultView(Activities.ItemsSource).Refresh();
             }
         }
 
@@ -119,7 +122,7 @@ namespace Warsztat.View
 
         private bool RequestFilter(object item)
         {
-            if (requestFilter.SelectedItem == null || requestFilter.SelectedItem == string.Empty)
+            if (requestFilter.SelectedItem == null || requestFilter.SelectedItem as string == string.Empty)
                 return true;
             else
                 return (item as Service.Activity)!.ParentRequestName == requestFilter.SelectedItem as string;

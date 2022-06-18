@@ -8,11 +8,11 @@ namespace Warsztat.Services
 {
     public partial class Service
     {
-        public List<Personel> Workers()
+        public List<Personel> ActiveWorkers()
         {
             List<Personel> workers = new();
 
-            var workersDB = context.Personels.Where(p => p.role == "Worker").ToList();
+            var workersDB = context.Personels.Where(p => p.role == "Worker" && p.isActive == true).ToList();
 
             foreach (var workerDB in workersDB)
             {
@@ -29,6 +29,14 @@ namespace Warsztat.Services
             }
 
             return workers;
+        }
+        public string WorkerName(int workerId)
+        {
+            var workerDB = context.Personels.Where(p => p.personelId == workerId).FirstOrDefault();
+            if (workerDB != null)
+                return $"{workerDB.name} {workerDB.surrname}";
+            else
+                return string.Empty;
         }
         public List<Client> Clients()
         {
@@ -242,7 +250,6 @@ namespace Warsztat.Services
                         description = description,
                         status = status,
                         dateTimeOfRequestStart = start,
-                        result = "none",
                         personelId = managerId,
                         carId = carId
                     }).Entity;
@@ -256,7 +263,6 @@ namespace Warsztat.Services
                     requestDB.description = description;
                     requestDB.status = status;
                     requestDB.dateTimeOfRequestStart = start;
-                    requestDB.result = "none";
                     requestDB.personelId = managerId;
                     requestDB.carId = carId;
                     context.SaveChanges();
@@ -314,7 +320,10 @@ namespace Warsztat.Services
 
                     activityDB.sequenceNumber = sequenceNumberInt;
                     activityDB.description = description;
+                    activityDB.status = status;
                     activityDB.activityType = type;
+                    activityDB.requestId = requestId;
+                    activityDB.personelId = workerId;
                     context.SaveChanges();
                 }
 
@@ -336,7 +345,7 @@ namespace Warsztat.Services
         public Request UpdateRequestStatus(string status, int id)
         {
             Models.Request requestDB = context.Requests
-                  .Where(p => p.carId == id).First();
+                  .Where(p => p.requestId == id).First();
 
             requestDB.status = status;
             context.SaveChanges();

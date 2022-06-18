@@ -69,29 +69,40 @@ namespace Warsztat.View
             Service.Personel? personel = Service.AddPersonel(name, surname, phoneNumber, role, userName, password, _changedItemId, isActive);
             if (personel != null)
             {
-                foreach (Service.Personel changedPersonel in Personels.Items)
-                    if (changedPersonel.Id == _changedItemId)
-                    {
-                        Personels.Items.Remove(changedPersonel);
-                        break;
-                    }
-
-
+                personels.RemoveAll(item => item.Id == _changedItemId);
                 personels.Add(personel);
+                CollectionViewSource.GetDefaultView(Personels.ItemsSource).Refresh();
             }
             else
             {
                 MessageBox.Show("Some fields are empty or incorrect.");
-                currentPopup = new MyPopupBuilder()
-                      .TextBox("Name", name)
-                      .TextBox("Surname", surname)
-                      .TextBox("Phone Number", phoneNumber)
-                      .TextBox("User Name", userName)
-                      .TextBox("Password", password)
-                      .ComboBox(new List<string> { "Manager", "Worker" }, "Role", role)
-                      .DataTransfer(transferDelegate)
-                      .Build();
-                currentPopup.Show();
+                if (data.Count < 7)
+                {
+                    currentPopup = new MyPopupBuilder()
+                     .TextBox("Name", name)
+                     .TextBox("Surname", surname)
+                     .TextBox("Phone Number", phoneNumber)
+                     .TextBox("User Name", userName)
+                     .TextBox("Password", password)
+                     .ComboBox(new List<string> { "Manager", "Worker" }, "Role", role)
+                     .DataTransfer(transferDelegate)
+                     .Build();
+                    currentPopup.Show();
+                }
+                else
+                {
+                    currentPopup = new MyPopupBuilder()
+                    .TextBox("Name", name)
+                    .TextBox("Surname", surname)
+                    .TextBox("Phone Number", phoneNumber)
+                    .TextBox("User Name", userName)
+                    .TextBox("Password", password)
+                    .ComboBox(new List<string> { "Manager", "Worker" }, "Role", role)
+                    .ComboBox(new List<string> { "Active", "Disactive" }, "Status", IsActive ? "Active" : "Disactive")
+                    .DataTransfer(transferDelegate)
+                    .Build();
+                    currentPopup.Show();
+                }
             }
                 
         }
@@ -108,7 +119,7 @@ namespace Warsztat.View
                          .TextBox("Surname", chosenPersonel.Surname!)
                          .TextBox("Phone Number", chosenPersonel.PhoneNumber!)
                          .TextBox("User Name", chosenPersonel.Username!)
-                         .TextBox("Password", chosenPersonel.Password!)
+                         .TextBox("Password")
                          .ComboBox(new List<string> { "Manager", "Worker" }, "Role", chosenPersonel.Role!)
                          .ComboBox(new List<string> { "Active", "Disactive" }, "Status", chosenPersonel.IsActive ? "Active" : "Disactive")
                          .DataTransfer(transferDelegate)
@@ -131,7 +142,7 @@ namespace Warsztat.View
 
         private bool StatusFilter(object item)
         {
-            return StatusCheckbox.IsChecked == true ? (item as Service.Personel)!.IsActive : true;
+            return StatusCheckbox.IsChecked == true ? true : (item as Service.Personel)!.IsActive;
         }
     }
 }

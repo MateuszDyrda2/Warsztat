@@ -212,7 +212,7 @@ namespace Warsztat.View
                            .TextBox("Description")
                            .ComboBox(Service.AllActivityTypes(), "Activity Type")
                            .ComboBox(sequenceNumbers, "Sequence Number")
-                           .ComboBox(Service.Workers())
+                           .ComboBox(Service.ActiveWorkers())
                            .DataTransfer(transferDelegate)
                            .Build();
                         currentPopup.Show();
@@ -256,7 +256,7 @@ namespace Warsztat.View
 
                         currentPopup = new MyPopupBuilder()
                             .TextBox("Registration Number", chosenCar.RegistrationNumber!)
-                            .ComboBox(Service.AllCars(), "Car", $"{chosenCar.Mark} {chosenCar.Model}")
+                            .ComboBox(Service.AllCars(), "Car", $"{chosenCar.Model} {chosenCar.Mark}")
                             .DataTransfer(transferDelegate)
                             .Build();
                         currentPopup.Show();
@@ -272,7 +272,7 @@ namespace Warsztat.View
                         _changedItemId = chosenRequest.Id;
 
                         currentPopup = new MyPopupBuilder()
-                           .TextBox("Description")
+                           .TextBox("Description", chosenRequest.Description)
                            .DataTransfer(transferDelegate)
                            .Build();
                         currentPopup.Show();
@@ -298,10 +298,10 @@ namespace Warsztat.View
                         }
 
                         currentPopup = new MyPopupBuilder()
-                           .TextBox("Description")
-                           .ComboBox(Service.AllActivityTypes(), "Activity Type")
-                           .ComboBox(sequenceNumbers, "Sequence Number")
-                           .ComboBox(Service.Workers())
+                           .TextBox("Description", chosenActivity.Description ?? string.Empty)
+                           .ComboBox(Service.AllActivityTypes(), "Activity Type", chosenActivity.Name ?? string.Empty)
+                           .ComboBox(sequenceNumbers, "Sequence Number", chosenActivity.SequenceNumber.ToString() ?? string.Empty)
+                           .ComboBox(Service.ActiveWorkers(), Service.WorkerName(chosenActivity.WorkerId ?? -1))
                            .DataTransfer(transferDelegate)
                            .Build();
                         currentPopup.Show();

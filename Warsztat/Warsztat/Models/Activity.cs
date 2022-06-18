@@ -36,7 +36,7 @@ namespace Warsztat.Models
         //Foreign Key
         public int? personelId { get; set; }
 
-        public Personel personel { get; set; }
+        public Personel? personel { get; set; }
 
         //Foreign Key
         public string activityType { get; set; }

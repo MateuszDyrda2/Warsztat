@@ -36,7 +36,7 @@ namespace Warsztat
                 string hash = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
                 foreach (Service.Personel personel in personels)
                 {
-                    if(personel.Username == usernameTextbox.Text && hash == personel.Password)
+                    if(personel.IsActive && personel.Username == usernameTextbox.Text && hash == personel.Password)
                     {
                         MessageBox.Show("Logged as " + personel.Username + " !");
                         if(personel.Role=="Admin")

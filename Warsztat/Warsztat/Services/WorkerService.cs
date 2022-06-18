@@ -27,9 +27,11 @@ namespace Warsztat.Services
                     Description = activity.description,
                     Result = activity.result,
                     ParentRequestName = "Request " + activity.requestId.ToString(),
+                    WorkerId = activity.personelId,
                     Status = activity.status,
                     Start = activity.dateTimeOfActivityStart,
                     End = activity.dateTimeOfActivityEnd
+                   
                 });
             }
 
@@ -58,6 +60,7 @@ namespace Warsztat.Services
                 SequenceNumber = activityDB.sequenceNumber,
                 Description = activityDB.description,
                 Result = activityDB.result,
+                WorkerId = activityDB.personelId,
                 Status = activityDB.status,
                 Start = activityDB.dateTimeOfActivityStart,
                 End = DateTime.Now
@@ -73,6 +76,7 @@ namespace Warsztat.Services
             public string? Description { get; set; }
             public string? Result { get; set; }
             public string? ParentRequestName { get; set; }
+            public int? WorkerId { get; set; }
             public string Status { 
 
                 get => _status!;

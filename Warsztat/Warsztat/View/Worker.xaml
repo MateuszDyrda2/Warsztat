@@ -5,11 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Warsztat.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Worker">
+      Title="Worker" Height="800" Width="800">
 
     <Grid>
-        <ListView Name="Activities" SelectionMode="Single" Margin="0,50,300,0" Width="500">
+        <ListView Name="Activities" SelectionMode="Single" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,100,0,0" Height="700" Width="600">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Request" Width="120" DisplayMemberBinding="{Binding ParentRequestName}"/>
@@ -20,17 +19,17 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Click="PursueButton_Click" Margin="454,10,256,394"  Height="20" Width="90">Pursue Activity</Button>
-        <Button Click="CancelButton_Click" Margin="549,10,150,394" Height="20" Width="90">Cancel Activity</Button>
-        <Button Click="LogoutButton_Click" Margin="698,6,10,400"  Height="20" Width="90">Logout</Button>
-        <TextBlock HorizontalAlignment="Left" Margin="655,50,0,0" Text="Status:" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <CheckBox Name="OpenCheckbox" Content="Open" Checked="FilterChanged" Unchecked="FilterChanged" IsChecked="true" HorizontalAlignment="Left" Margin="650,75,0,0" VerticalAlignment="Top"/>
-        <CheckBox Name="InProgressCheckbox" Content="In progress" Checked="FilterChanged" Unchecked="FilterChanged"  IsChecked="true" HorizontalAlignment="Left" Margin="650,100,0,0" VerticalAlignment="Top"/>
-        <CheckBox Name="FinishedCheckbox" Content="Finished" Checked="FilterChanged" Unchecked="FilterChanged"  IsChecked="false" HorizontalAlignment="Left" Margin="650,125,0,0" VerticalAlignment="Top"/>
-        <CheckBox Name="CancelledCheckbox" Content="Cancelled" Checked="FilterChanged" Unchecked="FilterChanged"  IsChecked="false" HorizontalAlignment="Left" Margin="650,150,0,0" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Search by request:" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,31,0,0" Text="Search by description:" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <ComboBox Name="requestFilter" SelectionChanged="requestFilter_SelectionChanged"  HorizontalAlignment="Left" Margin="130,8,0,0" VerticalAlignment="Top" Width="110" Height="19"/>
-        <TextBox Name="descriptionFilter" TextChanged="descriptionFilter_TextChanged" HorizontalAlignment="Left" Margin="130,30,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="110"/>
+        <Button Click="PursueButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="380,25,0,0"  Height="30" Width="100">Pursue Activity</Button>
+        <Button Click="CancelButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,25,0,0" Height="30" Width="100">Cancel Activity</Button>
+        <Button Click="LogoutButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,25,0,0"  Height="30" Width="100">Logout</Button>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="620,80,0,0" Text="Status:" TextWrapping="Wrap"/>
+        <CheckBox Name="OpenCheckbox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="620,100,0,0" Content="Open" Checked="FilterChanged" Unchecked="FilterChanged" IsChecked="true"/>
+        <CheckBox Name="InProgressCheckbox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="620,120,0,0" Content="In progress" Checked="FilterChanged" Unchecked="FilterChanged"  IsChecked="true"/>
+        <CheckBox Name="FinishedCheckbox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="620,140,0,0" Content="Finished" Checked="FilterChanged" Unchecked="FilterChanged"  IsChecked="false"/>
+        <CheckBox Name="CancelledCheckbox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="620,160,0,0" Content="Cancelled" Checked="FilterChanged" Unchecked="FilterChanged"  IsChecked="false"/>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0" Text="Search by request:" TextWrapping="Wrap"/>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,50,0,0" Text="Search by description:" TextWrapping="Wrap"/>
+        <ComboBox Name="requestFilter" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,20,0,0" Width="100" SelectionChanged="requestFilter_SelectionChanged"/>
+        <TextBox Name="descriptionFilter" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,50,0,0" Width="100" TextChanged="descriptionFilter_TextChanged" Text="" TextWrapping="Wrap"/>
     </Grid>
 </Window>
