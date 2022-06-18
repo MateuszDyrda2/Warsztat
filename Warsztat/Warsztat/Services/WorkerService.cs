@@ -26,6 +26,7 @@ namespace Warsztat.Services
                     SequenceNumber = activity.sequenceNumber,
                     Description = activity.description,
                     Result = activity.result,
+                    ParentRequestName = "Request " + activity.requestId.ToString(),
                     Status = activity.status,
                     Start = activity.dateTimeOfActivityStart,
                     End = activity.dateTimeOfActivityEnd
@@ -63,52 +64,6 @@ namespace Warsztat.Services
             };
             return activity;
         }
-
-       //do wywalenia i think
-       /* public Activity PursueWorkerActivity(int activityID, int workerID)
-        {
-            Models.Activity changedActivity = context.Personels
-                .Where(p => p.personelId == workerID)
-                .First().Activities.Where(a => a.activityId == activityID).First();
-            changedActivity.dateTimeOfActivityEnd = DateTime.Now;
-            changedActivity.status = "FIN";
-            context.SaveChanges();
-
-            Activity activity = new()
-            {
-                Id = changedActivity.activityId,
-                Name = ActivityNameFromDictionary(changedActivity.activityType),
-                SequenceNumber = changedActivity.sequenceNumber,
-                Description = changedActivity.description,
-                Result = changedActivity.result,
-                Status = changedActivity.status,
-                Start = changedActivity.dateTimeOfActivityStart,
-                End = changedActivity.dateTimeOfActivityEnd
-            };
-            return activity;
-        }
-        public Activity CancelWorkerActivity(int activityID, int workerID)
-        {
-            Models.Activity changedActivity = context.Personels
-               .Where(p => p.personelId == workerID)
-               .First().Activities.Where(a => a.activityId == activityID).First();
-            changedActivity.dateTimeOfActivityEnd = DateTime.Now;
-            changedActivity.status = "CAN";
-            context.SaveChanges();
-
-            Activity activity = new()
-            {
-                Id = changedActivity.activityId,
-                Name = ActivityNameFromDictionary(changedActivity.activityType),
-                SequenceNumber = changedActivity.sequenceNumber,
-                Description = changedActivity.description,
-                Result = changedActivity.result,
-                Status = changedActivity.status,
-                Start = changedActivity.dateTimeOfActivityStart,
-                End = changedActivity.dateTimeOfActivityEnd
-            };
-            return activity;
-        }*/
         public class Activity
         {
             private string? _status;
@@ -117,6 +72,7 @@ namespace Warsztat.Services
             public int? SequenceNumber { get; set; }
             public string? Description { get; set; }
             public string? Result { get; set; }
+            public string? ParentRequestName { get; set; }
             public string Status { 
 
                 get => _status!;

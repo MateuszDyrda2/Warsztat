@@ -21,6 +21,7 @@ namespace Warsztat.View
         public DataTransfer transferDelegate;
         private MyPopup? currentPopup;
         private int? _changedItemId;
+        List<Service.Personel> personels;
         public Admin(Service Service)
         {
             InitializeComponent();
@@ -31,7 +32,7 @@ namespace Warsztat.View
                 throw new NullReferenceException();
 
 
-            List<Service.Personel> personels = Service.WorkersAndManagers();
+            personels = Service.WorkersAndManagers();
 
             Personels.ItemsSource = personels;
 
@@ -64,7 +65,7 @@ namespace Warsztat.View
             string userName = data[3];
             string password = data[4];
             string role = data[5];
-            bool isActive = data[6] != null ? data[6] == "Active" ? true : false : true;
+            bool isActive = data.Count > 6 ? data[6] == "Active" ? true : false : true;
             Service.Personel? personel = Service.AddPersonel(name, surname, phoneNumber, role, userName, password, _changedItemId, isActive);
             if (personel != null)
             {
@@ -74,9 +75,9 @@ namespace Warsztat.View
                         Personels.Items.Remove(changedPersonel);
                         break;
                     }
-                       
 
-                Personels.Items.Add(personel);
+
+                personels.Add(personel);
             }
             else
             {

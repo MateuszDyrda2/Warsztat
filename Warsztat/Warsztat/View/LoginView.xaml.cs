@@ -27,6 +27,7 @@ namespace Warsztat
             else
             {
 
+                Service.AddAdmin();
                 List<Service.Personel> personels = Service.checkAllPersonel();
 
                 SHA512 sha512Hash = SHA512.Create();
@@ -35,7 +36,7 @@ namespace Warsztat
                 string hash = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
                 foreach (Service.Personel personel in personels)
                 {
-                    if(personel.Username == usernameTextbox.Text && personel.Password == hash)
+                    if(personel.Username == usernameTextbox.Text && hash == personel.Password)
                     {
                         MessageBox.Show("Logged as " + personel.Username + " !");
                         if(personel.Role=="Admin")

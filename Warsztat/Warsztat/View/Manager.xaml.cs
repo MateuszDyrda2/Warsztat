@@ -195,25 +195,33 @@ namespace Warsztat.View
                     currentPopup.Show();
                     break;
                 case 4:
-                    List<string> sequenceNumbers = new List<string>();
-                    int? highestSequenceNumber = Service.HighestSequenceNumber(currentRequest!.Id);
-                    if (highestSequenceNumber != null)
+                    if (currentRequest!.Status != "Finished" && currentRequest.Status != "Cancelled")
                     {
-                        for (int i = 1; i <= highestSequenceNumber.Value; i++)
-                            sequenceNumbers.Add((i).ToString());
+                        List<string> sequenceNumbers = new List<string>();
+                        int? highestSequenceNumber = Service.HighestSequenceNumber(currentRequest.Id);
+                        if (highestSequenceNumber != null)
+                        {
+                            for (int i = 1; i <= highestSequenceNumber.Value + 1; i++)
+                                sequenceNumbers.Add((i).ToString());
+                        }
+                        else
+                        {
+                            sequenceNumbers.Add("1");
+                        }
+                        currentPopup = new MyPopupBuilder()
+                           .TextBox("Description")
+                           .ComboBox(Service.AllActivityTypes(), "Activity Type")
+                           .ComboBox(sequenceNumbers, "Sequence Number")
+                           .ComboBox(Service.Workers())
+                           .DataTransfer(transferDelegate)
+                           .Build();
+                        currentPopup.Show();
                     }
                     else
                     {
-                        sequenceNumbers.Add("1");
+                        MessageBox.Show("Request was finished or cancelled!");
                     }
-                    currentPopup = new MyPopupBuilder()
-                       .TextBox("Description")
-                       .ComboBox(Service.AllActivityTypes(), "Activity Type")
-                       .ComboBox(sequenceNumbers, "Sequence Number")
-                       .ComboBox(Service.Workers())
-                       .DataTransfer(transferDelegate)
-                       .Build();
-                    currentPopup.Show();
+                    
                     break;
                 default:
                     break;
@@ -255,9 +263,49 @@ namespace Warsztat.View
                     }
                     break;
                 case 3:
-                    _requestStatus = null;
+                    if (Requests.SelectedItems.Count > 0)
+                    {
+                        _requestStatus = null;
+
+                        currentPopup?.Close();
+                        Service.Request chosenRequest = Requests.SelectedItems[0] as Service.Request ?? throw new InvalidCastException();
+                        _changedItemId = chosenRequest.Id;
+
+                        currentPopup = new MyPopupBuilder()
+                           .TextBox("Description")
+                           .DataTransfer(transferDelegate)
+                           .Build();
+                        currentPopup.Show();
+                    }
                     break;
                 case 4:
+                    if (Activities.SelectedItems.Count > 0)
+                    {
+                        currentPopup?.Close();
+                        Service.Activity chosenActivity = Activities.SelectedItems[0] as Service.Activity ?? throw new InvalidCastException();
+                        _changedItemId = chosenActivity.Id;
+
+                        List<string> sequenceNumbers = new List<string>();
+                        int? highestSequenceNumber = Service.HighestSequenceNumber(currentRequest!.Id);
+                        if (highestSequenceNumber != null)
+                        {
+                            for (int i = 1; i <= highestSequenceNumber.Value + 1; i++)
+                                sequenceNumbers.Add((i).ToString());
+                        }
+                        else
+                        {
+                            sequenceNumbers.Add("1");
+                        }
+
+                        currentPopup = new MyPopupBuilder()
+                           .TextBox("Description")
+                           .ComboBox(Service.AllActivityTypes(), "Activity Type")
+                           .ComboBox(sequenceNumbers, "Sequence Number")
+                           .ComboBox(Service.Workers())
+                           .DataTransfer(transferDelegate)
+                           .Build();
+                        currentPopup.Show();
+                    }
                     break;
                 default:
                     break;
@@ -340,7 +388,7 @@ namespace Warsztat.View
                         if (data[1] != string.Empty)
                             type = Service.AcitivtyTypeByName(data[1]);
                         string sequenceNumber = data[2];
-                        int workerId = data[3] != String.Empty ? Int32.Parse(data[3]) : -1;
+                        int? workerId = data[3] != String.Empty ? Int32.Parse(data[3]) : null;
                         Service.Activity? activity = Service.AddNewActivity(sequenceNumber, activityDescription, type, workerId, currentRequest!.Id, _changedItemId);
                         if (activity != null)
                         {
@@ -351,7 +399,10 @@ namespace Warsztat.View
                                     break;
                                 }
 
-                            Activities.Items.Add(activity);
+                            List<Service.Activity> activities = Service.Activities(currentRequest.Id);
+                            Activities.Items.Clear();
+                            foreach (Service.Activity activityTemp in activities)
+                                Activities.Items.Add(activityTemp);
                         }
                         else
                             MessageBox.Show("Some fields are empty or incorrect.");

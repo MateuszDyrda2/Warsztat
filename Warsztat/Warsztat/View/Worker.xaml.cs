@@ -26,6 +26,8 @@ namespace Warsztat.View
 
         private int? _changedItemId;
         private string? _activityStatus = null;
+
+        List<Service.Activity> activities;
         public Worker(int WorkerId, Service Service)
         {
             InitializeComponent();
@@ -36,20 +38,17 @@ namespace Warsztat.View
             if (Service == null)
                 throw new NullReferenceException();
 
-            List<Service.Activity> activities = Service.WorkerActivitities(WorkerId);
+            activities = Service.WorkerActivitities(WorkerId);
+            Activities.ItemsSource = activities;
+
+            requestFilter.Items.Add(string.Empty);
             foreach (Service.Activity activity in activities)
             {
-                Activities.Items.Add(activity);
+                requestFilter.Items.Add(activity.ParentRequestName);
             }
 
-            /*CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Activities.ItemsSource);
-            view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription("SequenceNumber", ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription("Description", ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription("Result", ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription("Status", ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription("Start", ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription("End", ListSortDirection.Ascending));*/
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Activities.ItemsSource);
+            view.Filter = Filter;
 
             transferDelegate += new DataTransfer(ReceiveInputFromPopup);
         }
@@ -59,7 +58,7 @@ namespace Warsztat.View
             if (_activityStatus != null)
             {
                 Service.Activity activity = Service.FinishOrCloseActivityStatus(_activityStatus, data[0], _changedItemId);
-                Activities.Items.Add(activity);
+                activities.Add(activity);
             }
         }
 
@@ -88,7 +87,7 @@ namespace Warsztat.View
             {
                 currentPopup?.Close();
                 Service.Activity chosenActivity = Activities.SelectedItems[0] as Service.Activity ?? throw new InvalidCastException();
-                if (chosenActivity.Status != "Finished" && chosenActivity.Status != "Canceled")
+                if (chosenActivity.Status != "Finished" && chosenActivity.Status != "Cancelled")
                 {
                     _changedItemId = chosenActivity.Id;
                     _activityStatus = "CAN";
@@ -106,6 +105,74 @@ namespace Warsztat.View
             this.Close();
             loginView.Show();
             return;
+        }
+
+        private void FilterChanged(object sender, RoutedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(Activities.ItemsSource)?.Refresh();
+        }
+
+        private bool Filter(object item)
+        {
+            return (OpenFilter(item) || InProgressFilter(item) || FinishedFilter(item) || CancelledFilter(item)) && DescriptionFilter(item) && RequestFilter(item);
+        }
+
+        private bool RequestFilter(object item)
+        {
+            if (requestFilter.SelectedItem == null || requestFilter.SelectedItem == string.Empty)
+                return true;
+            else
+                return (item as Service.Activity)!.ParentRequestName == requestFilter.SelectedItem as string;
+        }
+
+        private bool DescriptionFilter(object item)
+        {
+            if (string.IsNullOrEmpty(descriptionFilter.Text)) 
+                return true;
+            else
+                return (item as Service.Activity)!.Description!.Contains(descriptionFilter.Text);
+        }
+
+        private bool OpenFilter(object item)
+        {
+            if (OpenCheckbox.IsChecked == true)
+                return (item as Service.Activity)!.Status == "Open";
+            else
+                return false;
+        }
+
+        private bool InProgressFilter(object item)
+        {
+            if (InProgressCheckbox.IsChecked == true)
+                return (item as Service.Activity)!.Status == "InProgress";
+            else
+                return false;
+        }
+
+        private bool FinishedFilter(object item)
+        {
+            if (FinishedCheckbox.IsChecked == true)
+                return (item as Service.Activity)!.Status == "Finished";
+            else
+                return false;
+        }
+
+        private bool CancelledFilter(object item)
+        {
+            if (CancelledCheckbox.IsChecked == true)
+                return (item as Service.Activity)!.Status == "Canceled";
+            else
+                return false;
+        }
+
+        private void requestFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(Activities.ItemsSource)?.Refresh();
+        }
+
+        private void descriptionFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(Activities.ItemsSource)?.Refresh();
         }
     }
 }

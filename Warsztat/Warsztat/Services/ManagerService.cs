@@ -356,7 +356,7 @@ namespace Warsztat.Services
         public Request FinishOrCloseRequestStatus(string status, string result, int? id)
         {
             Models.Request requestDB = context.Requests
-                  .Where(r => r.activityId == id).First();
+                  .Where(r => r.requestId == id).First();
 
             requestDB.status = status;
             requestDB.result = result;
@@ -418,7 +418,7 @@ namespace Warsztat.Services
                     switch (value)
                     {
                         case "CAN":
-                            _status = "Canceled";
+                            _status = "Cancelled";
                             break;
                         case "FIN":
                             _status = "Finished";
