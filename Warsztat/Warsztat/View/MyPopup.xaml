@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Warsztat.View"
         mc:Ignorable="d"
-        Title="MyPopup" Height="500" Width="300">
+        Title="MyPopup" Height="500" Width="300"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     <Grid Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="125" />
@@ -21,7 +23,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <Button Content="Save" Click="SaveButton_Click" Grid.Column="0" Grid.Row="7" VerticalAlignment="Top" Height="30" Width="60"/>
-        <Button Content="Cancel" Click="CancelButton_Click"  Grid.Column="1" Grid.Row="7" VerticalAlignment="Top" Height="30" Width="60"/>
+        <Button Content="Save" Click="SaveButton_Click" Grid.Column="0" Grid.Row="7" VerticalAlignment="Center" Height="30" Width="60" Margin="29,0,36,0"/>
+        <Button Content="Cancel" Click="CancelButton_Click"  Grid.Column="1" Grid.Row="7" VerticalAlignment="Center" Height="30" Width="60" Margin="79,0,-14,0"/>
     </Grid>
 </Window>

@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Warsztat"
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="400"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     <Grid>
         <Label Content="Username" HorizontalAlignment="Left" Margin="140,90,0,0" VerticalAlignment="Top" FontSize="20"/>
         <TextBox x:Name="usernameTextbox" HorizontalAlignment="Center" Margin="0,132,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>

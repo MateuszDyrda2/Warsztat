@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Warsztat"
         mc:Ignorable="d"
         Title="MainWindow" Height="300" Width="800"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     <Grid>
         <Label Content="Choose would you like to do:" HorizontalAlignment="Center" Margin="0,81,0,0" VerticalAlignment="Top" Width="318" Height="40" FontSize="20"/>
         <Button x:Name="loginButton" Content="Log in" HorizontalAlignment="Left" Margin="241,131,0,0" VerticalAlignment="Top" Height="33" Width="109" Click="openLoginWindow"/>

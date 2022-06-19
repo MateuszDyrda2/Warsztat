@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Warsztat.View"
         mc:Ignorable="d"
-        Title="Admin" Height="800" Width="800">
+        Title="Admin" Height="800" Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     <Grid>
         <ListView Name="Personels" SelectionMode="Single" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,50,0,0" Width="600" Height="750">
             <ListView.View>
