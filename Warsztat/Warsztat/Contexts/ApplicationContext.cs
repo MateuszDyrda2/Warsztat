@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,9 @@ namespace Warsztat.Models
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-O54046C\\SQLEXPRESS;Initial Catalog=WorkshopDatabasee;Integrated Security=True;TrustServerCertificate=True;");
+            String ConnectionDB = File.ReadLines(@"..\..\..\DatabaseConnection.txt").Last();
+            ConnectionDB = ConnectionDB.Replace(@"\\", @"\").Trim(new char[] { '\"'});
+            optionsBuilder.UseSqlServer(ConnectionDB);
         }
 
         public DbSet <Client> Clients { get; set; }

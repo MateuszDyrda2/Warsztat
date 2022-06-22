@@ -1,0 +1,1 @@
+﻿"Data Source=DESKTOP-O54046C\SQLEXPRESS;Initial Catalog=WorkshopDatabasee;Integrated Security=True;TrustServerCertificate=True;"
